@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="RF4CE_MSO_TEMPORARY_PAIRING_COMPLETE" name="Temporary Pairing Complete" returnType="void">
+    <description>
+      This function is called by the RF4CE MSO plugin when a temporary pairing has been successfully created and the application should begin the validation procedure.  The application must complete the validation within the validation wait time (if set) and also kick the watchdog within the initial watchdog timeout (if set) to avoid the validation automatically failing due to a timeout.
+    </description>
+    <arg name="pairingIndex"    type="int8u"                             description="The index of the pairing entry." />
+    <arg name="eui64"           type="const EmberEUI64"                  description="The ::EmberEUI64 of the remote node." />
+    <arg name="vendorInfo"      type="const EmberRf4ceVendorInfo *"      description="The vendor information of the remote node." />
+    <arg name="applicationInfo" type="const EmberRf4ceApplicationInfo *" description="The application information of the remote node." />
+    <codeForStub />
+  </function>
+  <function id="RF4CE_MSO_BINDING_COMPLETE" name="Binding Complete" returnType="void">
+    <description>
+      This function is called by the RF4CE MSO plugin when the binding operation completes.  If status is ::EMBER_SUCCESS, binding was successful and pairingIndex indicates the index in the pairing table for the remote node.
+    </description>
+    <arg name="status"          type="EmberAfRf4ceMsoBindingStatus"         description="The status of the binding operation." />
+    <arg name="pairingIndex"    type="int8u"                                description="The index of the pairing entry." />
+    <codeForStub />
+  </function>
+  <function id="RF4CE_MSO_USER_CONTROL_PRESSED" name="User Control Pressed" returnType="void">
+    <description>
+      This function is called by the RF4CE MSO plugin when a User Control Pressed message is received by the device.
+    </description>
+    <arg name="commandCode"          type="EmberAfRf4ceMsoKeyCode" description="The HDMI CEC operand [UI Command]." />
+    <arg name="commandPayload"       type="const int8u *"          description="The additional operands, if any, required by the HDMI CEC command." />
+    <arg name="commandPayloadLength" type="int8u"                  description="The length of the command payload in bytes." />
+    <codeForStub />
+  </function>
+  <function id="RF4CE_MSO_USER_CONTROL_REPEATED" name="User Control Repeated" returnType="void">
+    <description>
+      This function is called by the RF4CE MSO plugin when a User Control Repeated message is received by the device.
+    </description>
+    <arg name="commandCode"          type="EmberAfRf4ceMsoKeyCode" description="The HDMI CEC operand [UI Command]." />
+    <arg name="commandPayload"       type="const int8u *"          description="The additional operands, if any, required by the HDMI CEC command." />
+    <arg name="commandPayloadLength" type="int8u"                  description="The length of the command payload in bytes." />
+    <codeForStub />
+  </function>
+  <function id="RF4CE_MSO_USER_CONTROL_RELEASED" name="User Control Released" returnType="void">
+    <description>
+      This function is called by the RF4CE MSO plugin when a User Control Released message is received by the device.
+    </description>
+    <arg name="commandCode" type="EmberAfRf4ceMsoKeyCode" description="The HDMI CEC operand [UI Command]." />
+    <codeForStub />
+  </function>
+  <function id="RF4CE_MSO_SET_ATTRIBUTE_REQUEST" name="Set Attribute Request" returnType="EmberAfRf4ceStatus">
+    <description>
+      This function is called by the RF4CE MSO plugin when a Set Attribute Request message is received by the device.
+    </description>
+    <arg name="pairingIndex" type="int8u"                      description="The index of the pairing entry." />
+    <arg name="attributeId"  type="EmberAfRf4ceMsoAttributeId" description="The attribute identifier." />
+    <arg name="index"        type="int8u"                      description="The index of the element to store." />
+    <arg name="valueLen"     type="int8u"                      description="The length in octets of the value field." />
+    <arg name="value"        type="const int8u *"              description="The value of the attribute element." />
+    <codeForStub>
+      return EMBER_AF_RF4CE_STATUS_UNSUPPORTED_ATTRIBUTE;
+    </codeForStub>
+  </function>
+  <function id="RF4CE_MSO_SET_ATTRIBUTE_RESPONSE" name="Set Attribute Response" returnType="void">
+    <description>
+      This function is called by the RF4CE MSO plugin when a Set Attribute Response message is received by the device.
+    </description>
+    <arg name="attributeId"  type="EmberAfRf4ceMsoAttributeId" description="The attribute identifier." />
+    <arg name="index"        type="int8u"                      description="The index of the element to store." />
+    <arg name="status"       type="EmberAfRf4ceStatus"         description="The result of the set attribute procedure." />
+    <codeForStub />
+  </function>
+  <function id="RF4CE_MSO_GET_ATTRIBUTE_REQUEST" name="Get Attribute Request" returnType="EmberAfRf4ceStatus">
+    <description>
+      This function is called by the RF4CE MSO plugin when a Get Attribute Request message is received by the device.
+    </description>
+    <arg name="pairingIndex" type="int8u"                      description="The index of the pairing entry." />
+    <arg name="attributeId"  type="EmberAfRf4ceMsoAttributeId" description="The attribute identifier." />
+    <arg name="index"        type="int8u"                      description="The index of the element to retrieve." />
+    <arg name="valueLen"     type="int8u"                      description="The length in octets of the requested attribute field." />
+    <arg name="value"        type="int8u *"                    description="The value of the attribute element." />
+    <codeForStub>
+      return EMBER_AF_RF4CE_STATUS_UNSUPPORTED_ATTRIBUTE;
+    </codeForStub>
+  </function>
+  <function id="RF4CE_MSO_GET_ATTRIBUTE_RESPONSE" name="Get Attribute Response" returnType="void">
+    <description>
+      This function is called by the RF4CE MSO plugin when a Get Attribute Response message is received by the device.
+    </description>
+    <arg name="attributeId"  type="EmberAfRf4ceMsoAttributeId" description="The attribute identifier." />
+    <arg name="index"        type="int8u"                      description="The index of the element to retrieve." />
+    <arg name="status"       type="EmberAfRf4ceStatus"         description="The result of the get attribute procedure." />
+    <arg name="valueLen"     type="int8u"                      description="The length in octets of the value field." />
+    <arg name="value"        type="const int8u *"              description="The value of the attribute element." />
+    <codeForStub />
+  </function>
+</callback>

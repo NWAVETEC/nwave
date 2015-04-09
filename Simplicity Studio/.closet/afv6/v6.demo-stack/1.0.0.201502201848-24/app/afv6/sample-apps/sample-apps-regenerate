@@ -1,0 +1,59 @@
+#!/bin/bash
+#
+# This file regenerates all the sample apps.
+#
+
+FILE=$1
+
+# Not strictly necessary, but helps reduce the amount of p4 churn.
+DIRECTORY=`dirname $0`
+if [ "$DIRECTORY" != "." ]; then
+  echo "Please execute this script from its own directory."
+  exit
+fi
+
+if [ -z $ISD_LOCATION ]; then
+  ISD_LOCATION=../../../../../insight-desktop/acheron/build/InSightDesktop
+  echo "Missing ISD_LOCATION environment variable. Trying: $ISD_LOCATION"
+fi
+
+
+EXECUTABLE_WINDOWS=$ISD_LOCATION/InSightDesktop.exe
+EXECUTABLE_LINUX=$ISD_LOCATION/InSightDesktop
+EXECUTABLE_MACOSX=$ISD_LOCATION/Eclipse.app/Contents/MacOS/eclipse
+if [ -x $EXECUTABLE_WINDOWS ]; then
+  EXECUTABLE=$EXECUTABLE_WINDOWS
+  IS_CYGWIN=true
+  PREFIX="./"
+elif [ -x $EXECUTABLE_MACOSX ]; then
+  EXECUTABLE=$EXECUTABLE_MACOSX
+  IS_CYGWIN=false
+  PREFIX="`pwd`/"
+else
+  EXECUTABLE=$EXECUTABLE_LINUX
+  IS_CYGWIN=false
+  PREFIX="./"
+fi
+
+if [ ! -x $EXECUTABLE ]; then
+  echo "Can't locate file $EXECUTABLE_LINUX, $EXECUTABLE_WINDOWS, or $EXECUTABLE_MACOSX! Please set ISD_LOCATION appropriately."
+  exit
+fi
+
+COMMON_ARGS="-application com.ember.app_framework.application -nosplash"
+
+if [ -z $FILE ]; then
+  ALL_FILES="-allIscFiles=$PREFIX"
+elif [ $FILE == "-regenIsc" ]; then
+  ALL_FILES="-allIscFiles=$PREFIX -regenerateIsc"
+else
+  ALL_FILES="-isc=$PREFIX$FILE"
+fi
+
+if [ $IS_CYGWIN = true ]; then
+  $EXECUTABLE $COMMON_ARGS  $ALL_FILES > .out 2> .err
+  cat .out
+  cat .err
+else
+  $EXECUTABLE $COMMON_ARGS $ALL_FILES
+fi

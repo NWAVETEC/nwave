@@ -1,0 +1,11 @@
+13:52:06 **** Incremental Build of configuration GNU ARM v4.8.3 - Debug for project emptyProject ****
+make -j1 all 
+Building target: nwave_unb.axf
+c:/siliconlabs/simplicitystudio/v3/developer/toolchains/gnu_arm/4.8_2013q4/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/bin/ld.exe: cannot find -llibnwave_unb.a
+collect2.exe: error: ld returned 1 exit status
+Invoking: GNU ARM C Linker
+arm-none-eabi-gcc -g -gdwarf-2 -mcpu=cortex-m3 -mthumb -T "nwave_unb.ld" -L"C:\lib" -Xlinker --gc-sections -Xlinker -Map="nwave_unb.map" --specs=nano.specs -o nwave_unb.axf "./src/nwrm_cmu.o" "./src/nwrm_printf.o" "./src/nwrm_rtc.o" "./src/nwrm_uart.o" "./emlib/em_acmp.o" "./emlib/em_adc.o" "./emlib/em_aes.o" "./emlib/em_assert.o" "./emlib/em_burtc.o" "./emlib/em_cmu.o" "./emlib/em_dac.o" "./emlib/em_dbg.o" "./emlib/em_dma.o" "./emlib/em_ebi.o" "./emlib/em_emu.o" "./emlib/em_gpio.o" "./emlib/em_i2c.o" "./emlib/em_idac.o" "./emlib/em_int.o" "./emlib/em_lcd.o" "./emlib/em_lesense.o" "./emlib/em_letimer.o" "./emlib/em_leuart.o" "./emlib/em_mpu.o" "./emlib/em_msc.o" "./emlib/em_opamp.o" "./emlib/em_pcnt.o" "./emlib/em_prs.o" "./emlib/em_rmu.o" "./emlib/em_rtc.o" "./emlib/em_system.o" "./emlib/em_timer.o" "./emlib/em_usart.o" "./emlib/em_vcmp.o" "./emlib/em_wdog.o" "./CMSIS/efm32g/startup_gcc_efm32g.o" "./CMSIS/efm32g/system_efm32g.o" "./BSP/bsp_dk_3201.o" "./BSP/bsp_dk_leds.o" "./BSP/bsp_trace.o" "./src/main.o" "-llibnwave_unb.a" -Wl,--start-group -lgcc -lc -lnosys -Wl,--end-group
+make: *** [nwave_unb.axf] Error 1
+
+13:52:09 Build Finished (took 2s.555ms)
+

@@ -1,0 +1,125 @@
+#ISD afv6
+# ISD version: 3.0.646
+
+# Application configuration
+appId: afv6
+architecture: ember-3588
+generationDirectory: PATH(ISC_RELATIVE):gen
+deviceName: client-3588
+
+# Devices
+
+# Plugin configuration
+appPlugin: exi
+appPlugin: http
+appPlugin: common
+appPlugin: drlc-common
+appPlugin: time-client
+appPlugin: subscription-client
+appPlugin: messaging-client
+appPlugin: messaging-common
+appPlugin: log-event-client
+appPlugin: log-event-common
+appPlugin: cli
+appPlugin: metering-common
+appPlugin: drlc-client
+appPlugin: client
+appPlugin: metering-client
+appPlugin: function-set-assignments-client
+appPlugin: billing-client
+appPlugin: power-status-client
+appPlugin: pricing-client
+appPlugin: prepayment-client
+appPlugin: power-status-common
+appPlugin: software-download-client
+appPlugin: der-client
+appPlugin: debug-print
+appPlugin: netstat-server
+appPlugin: netstat-client
+
+# Setup configurations
+{setupId:uriMapper
+}
+{setupId:xsdObjects
+default.
+ember
+useAllTypes=false
+}
+{setupId:commandLineConfiguration
+}
+{setupId:eventConfiguration
+}
+{setupId:debugConfiguration
+on
+area name off
+appSerial=1
+compile,CUSTOM1
+compile,CUSTOM2
+compile,CUSTOM3
+compile,DEBUG
+compile,EMBER_AF_PLUGIN_BILLING_CLIENT
+compile,EMBER_AF_PLUGIN_CLI
+compile,EMBER_AF_PLUGIN_CLIENT
+compile,EMBER_AF_PLUGIN_COMMON
+compile,EMBER_AF_PLUGIN_DER_CLIENT
+compile,EMBER_AF_PLUGIN_DRLC_CLIENT
+compile,EMBER_AF_PLUGIN_DRLC_COMMON
+compile,EMBER_AF_PLUGIN_END_DEVICE_CONTROL
+compile,EMBER_AF_PLUGIN_EXI
+compile,EMBER_AF_PLUGIN_FUNCTION_SET_ASSIGNMENTS_CLIENT
+compile,EMBER_AF_PLUGIN_HTTP
+compile,EMBER_AF_PLUGIN_LOG_EVENT_CLIENT
+compile,EMBER_AF_PLUGIN_LOG_EVENT_COMMON
+compile,EMBER_AF_PLUGIN_MESSAGING_CLIENT
+compile,EMBER_AF_PLUGIN_MESSAGING_COMMON
+compile,EMBER_AF_PLUGIN_METERING_CLIENT
+compile,EMBER_AF_PLUGIN_METERING_COMMON
+compile,EMBER_AF_PLUGIN_NETSTAT_CLIENT
+compile,EMBER_AF_PLUGIN_NETSTAT_SERVER
+compile,EMBER_AF_PLUGIN_PCT
+compile,EMBER_AF_PLUGIN_POWER_STATUS_CLIENT
+compile,EMBER_AF_PLUGIN_POWER_STATUS_COMMON
+compile,EMBER_AF_PLUGIN_PREPAYMENT_CLIENT
+compile,EMBER_AF_PLUGIN_PRICING_CLIENT
+compile,EMBER_AF_PLUGIN_SOFTWARE_DOWNLOAD_CLIENT
+compile,EMBER_AF_PLUGIN_SUBSCRIPTION_CLIENT
+compile,EMBER_AF_PLUGIN_TIME_CLIENT
+enable,DEBUG
+enable,EMBER_AF_PLUGIN_BILLING_CLIENT
+enable,EMBER_AF_PLUGIN_CLI
+enable,EMBER_AF_PLUGIN_CLIENT
+enable,EMBER_AF_PLUGIN_COMMON
+enable,EMBER_AF_PLUGIN_DER_CLIENT
+enable,EMBER_AF_PLUGIN_DRLC_CLIENT
+enable,EMBER_AF_PLUGIN_DRLC_COMMON
+enable,EMBER_AF_PLUGIN_END_DEVICE_CONTROL
+enable,EMBER_AF_PLUGIN_EXI
+enable,EMBER_AF_PLUGIN_FUNCTION_SET_ASSIGNMENTS_CLIENT
+enable,EMBER_AF_PLUGIN_HTTP
+enable,EMBER_AF_PLUGIN_LOG_EVENT
+enable,EMBER_AF_PLUGIN_MESSAGING_CLIENT
+enable,EMBER_AF_PLUGIN_MESSAGING_COMMON
+enable,EMBER_AF_PLUGIN_METERING_CLIENT
+enable,EMBER_AF_PLUGIN_METERING_COMMON
+enable,EMBER_AF_PLUGIN_NETSTAT_CLIENT
+enable,EMBER_AF_PLUGIN_NETSTAT_SERVER
+enable,EMBER_AF_PLUGIN_PCT
+enable,EMBER_AF_PLUGIN_POWER_STATUS_CLIENT
+enable,EMBER_AF_PLUGIN_POWER_STATUS_COMMON
+enable,EMBER_AF_PLUGIN_PREPAYMENT_CLIENT
+enable,EMBER_AF_PLUGIN_PRICING_CLIENT
+enable,EMBER_AF_PLUGIN_SOFTWARE_DOWNLOAD_CLIENT
+enable,EMBER_AF_PLUGIN_SUBSCRIPTION_CLIENT
+enable,EMBER_AF_PLUGIN_TIME_CLIENT
+}
+{setupId:callbackConfiguration
+}
+{setupId:macros
+}
+{setupId:additionalFiles
+}
+{setupId:halOptions
+}
+
+# Plugin options
+pluginOption: EMBER_AFV6_PLUGIN_COMMON_END_DEVICE_COUNT,5

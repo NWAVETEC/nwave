@@ -1,0 +1,99 @@
+#ISD afv6
+# ISD version: 3.0.598
+
+# Application configuration
+appId: afv6
+architecture: ember-357
+generationDirectory: PATH(ISC_RELATIVE):gen
+deviceName: esi
+
+# Devices
+device: ESI
+
+# Plugin configuration
+appPlugin: cli
+appPlugin: common
+appPlugin: exi
+appPlugin: http
+appPlugin: drlc-common
+appPlugin: subscription-server
+appPlugin: time-server
+appPlugin: log-event-server
+appPlugin: log-event-common
+appPlugin: messaging-server
+appPlugin: messaging-common
+appPlugin: drlc-server
+appPlugin: server
+appPlugin: netstat-server
+appPlugin: function-set-assignments-server
+appPlugin: software-download-server
+appPlugin: power-status-server
+appPlugin: power-status-common
+appPlugin: debug-print
+
+# Setup configurations
+{setupId:uriMapper
+}
+{setupId:xsdObjects
+default.
+ember
+useAllTypes=false
+}
+{setupId:commandLineConfiguration
+}
+{setupId:eventConfiguration
+}
+{setupId:debugConfiguration
+on
+area name off
+appSerial=1
+compile,DEBUG
+compile,EMBER_AF_PLUGIN_CLI
+compile,EMBER_AF_PLUGIN_COMMON
+compile,EMBER_AF_PLUGIN_DRLC_COMMON
+compile,EMBER_AF_PLUGIN_DRLC_SERVER
+compile,EMBER_AF_PLUGIN_EXI
+compile,EMBER_AF_PLUGIN_FUNCTION_SET_ASSIGNMENTS_SERVER
+compile,EMBER_AF_PLUGIN_HTTP
+compile,EMBER_AF_PLUGIN_LOG_EVENT_COMMON
+compile,EMBER_AF_PLUGIN_LOG_EVENT_SERVER
+compile,EMBER_AF_PLUGIN_MESSAGING_COMMON
+compile,EMBER_AF_PLUGIN_MESSAGING_SERVER
+compile,EMBER_AF_PLUGIN_NETSTAT_SERVER
+compile,EMBER_AF_PLUGIN_POWER_STATUS_COMMON
+compile,EMBER_AF_PLUGIN_POWER_STATUS_SERVER
+compile,EMBER_AF_PLUGIN_SERVER
+compile,EMBER_AF_PLUGIN_SOFTWARE_DOWNLOAD_SERVER
+compile,EMBER_AF_PLUGIN_SUBSCRIPTION_SERVER
+compile,EMBER_AF_PLUGIN_TIME_SERVER
+enable,DEBUG
+enable,EMBER_AF_PLUGIN_CLI
+enable,EMBER_AF_PLUGIN_COMMON
+enable,EMBER_AF_PLUGIN_DRLC_COMMON
+enable,EMBER_AF_PLUGIN_DRLC_SERVER
+enable,EMBER_AF_PLUGIN_EXI
+enable,EMBER_AF_PLUGIN_FUNCTION_SET_ASSIGNMENTS_SERVER
+enable,EMBER_AF_PLUGIN_HTTP
+enable,EMBER_AF_PLUGIN_LOG_EVENT_COMMON
+enable,EMBER_AF_PLUGIN_LOG_EVENT_SERVER
+enable,EMBER_AF_PLUGIN_MESSAGING_COMMON
+enable,EMBER_AF_PLUGIN_MESSAGING_SERVER
+enable,EMBER_AF_PLUGIN_NETSTAT_SERVER
+enable,EMBER_AF_PLUGIN_POWER_STATUS_COMMON
+enable,EMBER_AF_PLUGIN_POWER_STATUS_SERVER
+enable,EMBER_AF_PLUGIN_SERVER
+enable,EMBER_AF_PLUGIN_SOFTWARE_DOWNLOAD_SERVER
+enable,EMBER_AF_PLUGIN_SUBSCRIPTION_SERVER
+enable,EMBER_AF_PLUGIN_TIME_SERVER
+}
+{setupId:callbackConfiguration
+}
+{setupId:macros
+}
+{setupId:additionalFiles
+}
+{setupId:halOptions
+}
+
+# Plugin options
+pluginOption: EMBER_AFV6_PLUGIN_COMMON_END_DEVICE_COUNT,5

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="RF4CE_GDP_BINDING_COMPLETE" name="Binding Complete" returnType="void">
+    <description>
+      This function is called by the RF4CE GDP plugin when the binding operation completes.  If status is ::EMBER_SUCCESS, binding was successful and pairingIndex indicates the index in the pairing table for the remote node.
+    </description>
+    <arg name="status"          type="EmberStatus"         description="The status of the binding operation." />
+    <arg name="pairingIndex"    type="int8u"               description="The index of the pairing entry." />
+    <codeForStub />
+  </function>
+</callback>

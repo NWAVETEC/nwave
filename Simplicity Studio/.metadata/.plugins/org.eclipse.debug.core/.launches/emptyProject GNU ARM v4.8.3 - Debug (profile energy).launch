@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="com.silabs.studio.energyprofiler.ui.launch">
+<stringAttribute key="com.silabs.ide.debug.core.DEFAULT_ADAPTER" value=""/>
+<stringAttribute key="com.silabs.ide.debug.core.ERASE_METHOD" value="page"/>
+<booleanAttribute key="com.silabs.ide.debug.core.RUN_FROM_RESET" value="true"/>
+<booleanAttribute key="com.silabs.ide.debug.core.SMART_DOWNLOAD" value="false"/>
+<stringAttribute key="com.silabs.ide.si32.debug.CONNECT_METHOD" value="normal"/>
+<booleanAttribute key="com.silabs.ide.si32.debug.EAPROFILER_CODE_CORRELATION" value="true"/>
+<stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_START_MODE" value="run"/>
+<booleanAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN" value="true"/>
+<stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN_SYMBOL" value="main"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="GNU ARM v4.8.3 - Debug/emptyProject.axf"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="emptyProject"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/emptyProject"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
+</launchConfiguration>

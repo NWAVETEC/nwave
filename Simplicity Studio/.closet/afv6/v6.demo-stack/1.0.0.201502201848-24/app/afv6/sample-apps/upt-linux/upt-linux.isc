@@ -1,0 +1,86 @@
+#ISD afv6
+# ISD version: 3.0.598
+
+# Application configuration
+appId: afv6
+architecture: linux-linux
+generationDirectory: PATH(ISC_RELATIVE):gen
+deviceName: upt-linux
+
+# Devices
+device: UPT
+
+# Plugin configuration
+appPlugin: subscription-server
+appPlugin: server
+appPlugin: metering-server
+appPlugin: common
+appPlugin: time-server
+appPlugin: exi
+appPlugin: metering-common
+appPlugin: http
+appPlugin: cli
+appPlugin: log-event-server
+appPlugin: log-event-common
+appPlugin: debug-print
+
+# Setup configurations
+{setupId:debugConfiguration
+on
+area name off
+appSerial=1
+compile,CUSTOM1
+compile,CUSTOM2
+compile,CUSTOM3
+compile,DEBUG
+compile,EMBER_AF_PLUGIN_CLI
+compile,EMBER_AF_PLUGIN_COMMON
+compile,EMBER_AF_PLUGIN_END_DEVICE
+compile,EMBER_AF_PLUGIN_EXI
+compile,EMBER_AF_PLUGIN_HTTP
+compile,EMBER_AF_PLUGIN_LIST
+compile,EMBER_AF_PLUGIN_LOG_EVENT_COMMON
+compile,EMBER_AF_PLUGIN_LOG_EVENT_SERVER
+compile,EMBER_AF_PLUGIN_METERING_COMMON
+compile,EMBER_AF_PLUGIN_METERING_SERVER
+compile,EMBER_AF_PLUGIN_NETSTAT
+compile,EMBER_AF_PLUGIN_SERVER
+compile,EMBER_AF_PLUGIN_SUBSCRIPTION_SERVER
+compile,EMBER_AF_PLUGIN_TIME_SERVER
+enable,DEBUG
+enable,EMBER_AF_PLUGIN_CLI
+enable,EMBER_AF_PLUGIN_COMMON
+enable,EMBER_AF_PLUGIN_END_DEVICE
+enable,EMBER_AF_PLUGIN_EXI
+enable,EMBER_AF_PLUGIN_HTTP
+enable,EMBER_AF_PLUGIN_LIST
+enable,EMBER_AF_PLUGIN_LOG_EVENT_COMMON
+enable,EMBER_AF_PLUGIN_LOG_EVENT_SERVER
+enable,EMBER_AF_PLUGIN_METERING_COMMON
+enable,EMBER_AF_PLUGIN_METERING_SERVER
+enable,EMBER_AF_PLUGIN_NETSTAT
+enable,EMBER_AF_PLUGIN_SERVER
+enable,EMBER_AF_PLUGIN_SUBSCRIPTION_SERVER
+enable,EMBER_AF_PLUGIN_TIME_SERVER
+}
+{setupId:xsdObjects
+default.
+ember
+useAllTypes=false
+}
+{setupId:callbackConfiguration
+}
+{setupId:uriMapper
+}
+{setupId:commandLineConfiguration
+}
+{setupId:eventConfiguration
+}
+{setupId:macros
+}
+{setupId:halOptions
+}
+{setupId:additionalFiles
+}
+
+# Plugin options

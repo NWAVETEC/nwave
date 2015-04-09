@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<callback prefix="emberAf" postfix="Callback">
+  <function id="EVENTS_SERVER_OK_TO_CLEAR_LOG" name="Ok To Clear Log" returnType="boolean">
+    <description> 
+      This function is called by the Events server plugin whenever a Clear Event Log Request command is received.  The application should return TRUE if it is Ok to clear the given log and FALSE otherwise.
+      If the request is to clear all logs (i.e. logId == EMBER_ZCL_EVENT_LOG_ID_ALL_LOGS) and the application allows all logs to be cleared then the application should return TRUE.  If the application
+      does not allow all logs to be cleared it should return FALSE in which case the plugin will subsequently call this callback for each event log allowing the application to selectively choose which
+      event logs are Ok to be cleared. 
+    </description>
+    <arg name="logId" type="EmberAfEventLogId"  description="The identifier of the log requested to be cleared." />
+    <codeForStub>
+      return TRUE;
+    </codeForStub>
+  </function>
+</callback>

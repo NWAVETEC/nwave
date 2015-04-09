@@ -1,0 +1,97 @@
+#ISD afv6
+# ISD version: 3.0.598
+
+# Application configuration
+appId: afv6
+architecture: ember-357
+generationDirectory: PATH(ISC_RELATIVE):gen
+deviceName: ipd
+
+# Devices
+device: IPD
+
+# Plugin configuration
+appPlugin: exi
+appPlugin: http
+appPlugin: common
+appPlugin: metering-common
+appPlugin: subscription-client
+appPlugin: messaging-client
+appPlugin: messaging-common
+appPlugin: log-event-client
+appPlugin: log-event-common
+appPlugin: cli
+appPlugin: time-client
+appPlugin: metering-client
+appPlugin: client
+appPlugin: debug-print
+
+# Setup configurations
+{setupId:uriMapper
+}
+{setupId:xsdObjects
+default.
+ember
+useAllTypes=false
+}
+{setupId:commandLineConfiguration
+}
+{setupId:eventConfiguration
+}
+{setupId:debugConfiguration
+on
+area name off
+appSerial=1
+compile,CUSTOM1
+compile,CUSTOM2
+compile,CUSTOM3
+compile,DEBUG
+compile,EMBER_AF_PLUGIN_CLI
+compile,EMBER_AF_PLUGIN_CLIENT
+compile,EMBER_AF_PLUGIN_COMMON
+compile,EMBER_AF_PLUGIN_DRLC_CLIENT
+compile,EMBER_AF_PLUGIN_DRLC_COMMON
+compile,EMBER_AF_PLUGIN_END_DEVICE_CONTROL
+compile,EMBER_AF_PLUGIN_EXI
+compile,EMBER_AF_PLUGIN_HTTP
+compile,EMBER_AF_PLUGIN_LOG_EVENT_CLIENT
+compile,EMBER_AF_PLUGIN_LOG_EVENT_COMMON
+compile,EMBER_AF_PLUGIN_MESSAGING_CLIENT
+compile,EMBER_AF_PLUGIN_MESSAGING_COMMON
+compile,EMBER_AF_PLUGIN_METERING_CLIENT
+compile,EMBER_AF_PLUGIN_METERING_COMMON
+compile,EMBER_AF_PLUGIN_NETSTAT
+compile,EMBER_AF_PLUGIN_PCT
+compile,EMBER_AF_PLUGIN_SUBSCRIPTION_CLIENT
+compile,EMBER_AF_PLUGIN_TIME_CLIENT
+enable,DEBUG
+enable,EMBER_AF_PLUGIN_CLI
+enable,EMBER_AF_PLUGIN_CLIENT
+enable,EMBER_AF_PLUGIN_COMMON
+enable,EMBER_AF_PLUGIN_DRLC_CLIENT
+enable,EMBER_AF_PLUGIN_DRLC_COMMON
+enable,EMBER_AF_PLUGIN_END_DEVICE_CONTROL
+enable,EMBER_AF_PLUGIN_EXI
+enable,EMBER_AF_PLUGIN_HTTP
+enable,EMBER_AF_PLUGIN_LOG_EVENT_CLIENT
+enable,EMBER_AF_PLUGIN_LOG_EVENT_COMMON
+enable,EMBER_AF_PLUGIN_MESSAGING_CLIENT
+enable,EMBER_AF_PLUGIN_MESSAGING_COMMON
+enable,EMBER_AF_PLUGIN_METERING_CLIENT
+enable,EMBER_AF_PLUGIN_METERING_COMMON
+enable,EMBER_AF_PLUGIN_NETSTAT
+enable,EMBER_AF_PLUGIN_PCT
+enable,EMBER_AF_PLUGIN_SUBSCRIPTION_CLIENT
+enable,EMBER_AF_PLUGIN_TIME_CLIENT
+}
+{setupId:callbackConfiguration
+}
+{setupId:macros
+}
+{setupId:halOptions
+}
+{setupId:additionalFiles
+}
+
+# Plugin options
+pluginOption: EMBER_AFV6_PLUGIN_COMMON_END_DEVICE_COUNT,5

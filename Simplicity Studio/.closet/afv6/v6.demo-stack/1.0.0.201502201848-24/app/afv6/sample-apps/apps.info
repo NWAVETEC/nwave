@@ -1,0 +1,48 @@
+# Format of this file is:
+
+client-3588 {
+ name=Client for 3588
+ Client application for SE2.0, the EM3588 variant.
+}
+
+client-linux {
+ name=Client for Linux host
+ Client application for SE2.0, Linux variant.
+}
+
+server-linux {
+ name=Server for Linux host
+ Server application for SE2.0, Linux variant.
+}
+
+esi {
+ name=ESI application
+ This application demonstrates the SE2.0 ESI functionality.
+}
+
+esi-slim {
+ name=ESI application for small footprint
+}
+
+ipd {
+ name=In-Premisses Display
+ This application demonstrates the IPD functionality.
+}
+
+pct {
+ name=PCT application
+}
+
+pct-slim {
+ name=PCT for small footprint
+}
+
+server-3588 {
+ name=Server application for EM3588
+}
+
+upt {
+ name=UPT application
+ UPT application for testing the SE2.0
+ functionality.
+}

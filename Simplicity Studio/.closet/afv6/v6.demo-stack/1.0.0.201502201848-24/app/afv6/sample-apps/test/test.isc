@@ -1,0 +1,52 @@
+#ISD afv6
+# ISD version: 3.0.598
+
+# Application configuration
+appId: afv6
+generationDirectory: PATH(ISC_RELATIVE):gen
+deviceName: test
+
+# Devices
+
+# Plugin configuration
+appPlugin: exi
+appPlugin: http
+appPlugin: common
+appPlugin: drlc-common
+appPlugin: time-client
+appPlugin: subscription-client
+appPlugin: messaging-client
+appPlugin: messaging-common
+appPlugin: cli
+appPlugin: drlc-client
+appPlugin: client
+appPlugin: debug-print
+
+# Setup configurations
+{setupId:uriMapper
+}
+{setupId:xsdObjects
+builtin:meta-inf/sep_106049r28ZB.xsd
+ember
+useAllTypes=true
+}
+{setupId:commandLineConfiguration
+}
+{setupId:eventConfiguration
+}
+{setupId:debugConfiguration
+on
+area name off
+appSerial=1
+}
+{setupId:callbackConfiguration
+}
+{setupId:macros
+}
+{setupId:halOptions
+}
+{setupId:additionalFiles
+}
+
+# Plugin options
+pluginOption: EMBER_AFV6_PLUGIN_END_DEVICE_END_DEVICE_COUNT,5

@@ -1,0 +1,23 @@
+# This file contains "devices".
+# Device is a collection of configured plugins.
+# Under each device can be:
+#    required: id, id, id...        <= These are turned on and may not be turned off
+#    recommended: id, id, id...     <= These are turned on by default but may be turned off by user
+#    optional: id, id, id...        <= These are turned off by default but may be turned on by user
+#    prohibited: id, id, id...      <= These are turned off and may not be turned on
+
+device "IPD" {
+  required: metering-client
+}
+
+device "PCT" {
+  required: drlc-client
+}
+
+device "UPT" {
+  required: metering-server
+}
+
+device "ESI" {
+  required: drlc-server
+}

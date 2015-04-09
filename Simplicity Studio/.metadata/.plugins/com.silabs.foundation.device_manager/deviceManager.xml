@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<deviceManager>
+  <devices>
+    <device id="com.silabs.foundation.device.unified@8286F4ED160468106C087236473DF61D">
+      <settings/>
+      <properties>
+        <property key="SerialDeviceTokens.PORT_PATH" value="java.lang.String:COM1"/>
+        <property key="CoreDeviceTokens.IS_LOCAL" value="java.lang.Boolean:true"/>
+        <property key="CoreDeviceTokens.TYPE" value="com.silabs.foundation.device.properties.types.CoreDeviceTypes:SERIAL_PORT"/>
+        <property key="TCFDeviceTokens.CONNECTION_ID" value="java.lang.String:serial.serial"/>
+        <property key="TCFDeviceTokens.TRANSPORT_ID" value="java.lang.String:serial"/>
+        <property key="CoreDeviceTokens.LABEL" value="java.lang.String:COM1"/>
+        <property key="TCFDeviceTokens.SERIAL_PORT_ID" value="java.lang.String:serial.serial.COM1"/>
+        <property key="SerialDeviceTokens.PORT_NAME" value="java.lang.String:COM1"/>
+      </properties>
+    </device>
+    <device id="com.silabs.foundation.device.unified@EAF1DE223D2B249EF335A6A752B48427">
+      <settings/>
+      <properties>
+        <property key="SerialDeviceTokens.PORT_PATH" value="java.lang.String:COM3"/>
+        <property key="CoreDeviceTokens.IS_LOCAL" value="java.lang.Boolean:true"/>
+        <property key="CoreDeviceTokens.TYPE" value="com.silabs.foundation.device.properties.types.CoreDeviceTypes:SERIAL_PORT"/>
+        <property key="TCFDeviceTokens.CONNECTION_ID" value="java.lang.String:serial.serial"/>
+        <property key="TCFDeviceTokens.TRANSPORT_ID" value="java.lang.String:serial"/>
+        <property key="CoreDeviceTokens.LABEL" value="java.lang.String:COM3"/>
+        <property key="TCFDeviceTokens.SERIAL_PORT_ID" value="java.lang.String:serial.serial.COM3"/>
+        <property key="SerialDeviceTokens.PORT_NAME" value="java.lang.String:COM3"/>
+      </properties>
+    </device>
+    <device id="com.silabs.foundation.device.unified@A7DB67ECBFDB01D351C9956FAC35EE3A">
+      <settings/>
+      <properties>
+        <property key="TCFDeviceTokens.ADAPTER_ID" value="java.lang.String:usb.440027037.adapter"/>
+        <property key="HardwareDeviceTokens.KIT_LABEL" value="java.lang.String:EFM32 Wonder Gecko Starter Kit Board"/>
+        <property key="HardwareDeviceTokens.KIT_ID" value="java.lang.String:BRD2400A Rev. A00"/>
+        <property key="UsbDeviceTokens.USB_PRODUCT_NAME" value="java.lang.String:J-Link Silicon Labs"/>
+        <property key="TCFDeviceTokens.CONNECTION_ID" value="java.lang.String:usb.440027037"/>
+        <property key="HardwareDeviceTokens.MCU_ID" value="java.lang.String:Unknown"/>
+        <property key="AdapterDeviceTokens.ADAPTER_SERIAL_NUMBER" value="java.lang.String:440027037"/>
+        <property key="CoreDeviceTokens.LABEL" value="java.lang.String:EFM32 Wonder Gecko Starter Kit Board (440027037)"/>
+        <property key="AdapterDeviceTokens.ADAPTER_TYPE" value="com.silabs.foundation.device.properties.types.CoreAdapterTypes:SEGGER_JLINK"/>
+        <property key="TCFDeviceTokens.KIT_ID" value="java.lang.String:usb.440027037.adapter.kit"/>
+        <property key="UsbDeviceTokens.USB_SERIAL_NUMBER" value="java.lang.String:440027037"/>
+        <property key="CoreDeviceTokens.IS_LOCAL" value="java.lang.Boolean:true"/>
+        <property key="HardwareDeviceTokens.MCU_LABEL" value="java.lang.String:Unknown"/>
+        <property key="CoreDeviceTokens.TYPE" value="com.silabs.foundation.device.properties.types.CoreDeviceTypes:DEBUG_ADAPTER"/>
+        <property key="UsbDeviceTokens.IS_USB" value="java.lang.Boolean:true"/>
+        <property key="TCFDeviceTokens.MCU_ID" value="java.lang.String:usb.440027037.adapter.kit.mcu"/>
+        <property key="TCFDeviceTokens.TRANSPORT_ID" value="java.lang.String:usb"/>
+        <property key="AdapterDeviceTokens.ADAPTER_NAME" value="java.lang.String:adapter"/>
+      </properties>
+    </device>
+  </devices>
+  <groups/>
+</deviceManager>

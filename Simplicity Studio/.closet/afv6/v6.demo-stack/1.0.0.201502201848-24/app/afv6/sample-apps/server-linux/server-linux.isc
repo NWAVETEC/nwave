@@ -1,0 +1,108 @@
+#ISD afv6
+# ISD version: 3.0.765
+
+# Application configuration
+appId: afv6
+architecture: linux-linux
+generationDirectory: PATH(ISC_RELATIVE):gen
+deviceName: server-linux
+
+# Devices
+device: ESI
+
+# Plugin configuration
+appPlugin: exi
+appPlugin: http
+appPlugin: drlc-server
+appPlugin: server
+appPlugin: common
+appPlugin: drlc-common
+appPlugin: subscription-server
+appPlugin: messaging-server
+appPlugin: messaging-common
+appPlugin: time-server
+appPlugin: log-event-server
+appPlugin: log-event-common
+appPlugin: cli
+appPlugin: function-set-assignments-server
+appPlugin: software-download-server
+appPlugin: debug-print
+appPlugin: metering-server
+appPlugin: metering-common
+appPlugin: prepayment-server
+appPlugin: power-status-server
+appPlugin: pricing-server
+appPlugin: netstat-server
+appPlugin: billing-server
+appPlugin: power-status-common
+
+# Setup configurations
+{setupId:uriMapper
+}
+{setupId:xsdObjects
+default.
+ember
+useAllTypes=false
+}
+{setupId:commandLineConfiguration
+}
+{setupId:eventConfiguration
+}
+{setupId:debugConfiguration
+on
+area name off
+appSerial=1
+compile,CUSTOM1
+compile,CUSTOM2
+compile,CUSTOM3
+compile,DEBUG
+compile,EMBER_AF_PLUGIN_CLI
+compile,EMBER_AF_PLUGIN_COMMON
+compile,EMBER_AF_PLUGIN_DRLC_COMMON
+compile,EMBER_AF_PLUGIN_DRLC_SERVER
+compile,EMBER_AF_PLUGIN_END_DEVICE
+compile,EMBER_AF_PLUGIN_EXI
+compile,EMBER_AF_PLUGIN_FUNCTION_SET_ASSIGNMENTS_SERVER
+compile,EMBER_AF_PLUGIN_HTTP
+compile,EMBER_AF_PLUGIN_LIST
+compile,EMBER_AF_PLUGIN_LOG_EVENT_COMMON
+compile,EMBER_AF_PLUGIN_LOG_EVENT_SERVER
+compile,EMBER_AF_PLUGIN_MESSAGING_COMMON
+compile,EMBER_AF_PLUGIN_MESSAGING_SERVER
+compile,EMBER_AF_PLUGIN_NETSTAT
+compile,EMBER_AF_PLUGIN_SERVER
+compile,EMBER_AF_PLUGIN_SOFTWARE_DOWNLOAD_SERVER
+compile,EMBER_AF_PLUGIN_SUBSCRIPTION_SERVER
+compile,EMBER_AF_PLUGIN_TIME_SERVER
+enable,DEBUG
+enable,EMBER_AF_PLUGIN_CLI
+enable,EMBER_AF_PLUGIN_COMMON
+enable,EMBER_AF_PLUGIN_DRLC_COMMON
+enable,EMBER_AF_PLUGIN_DRLC_SERVER
+enable,EMBER_AF_PLUGIN_END_DEVICE
+enable,EMBER_AF_PLUGIN_EXI
+enable,EMBER_AF_PLUGIN_FUNCTION_SET_ASSIGNMENTS_SERVER
+enable,EMBER_AF_PLUGIN_HTTP
+enable,EMBER_AF_PLUGIN_LIST
+enable,EMBER_AF_PLUGIN_LOG_EVENT_COMMON
+enable,EMBER_AF_PLUGIN_LOG_EVENT_SERVER
+enable,EMBER_AF_PLUGIN_MESSAGING_COMMON
+enable,EMBER_AF_PLUGIN_MESSAGING_SERVER
+enable,EMBER_AF_PLUGIN_NETSTAT
+enable,EMBER_AF_PLUGIN_SERVER
+enable,EMBER_AF_PLUGIN_SOFTWARE_DOWNLOAD_SERVER
+enable,EMBER_AF_PLUGIN_SUBSCRIPTION_SERVER
+enable,EMBER_AF_PLUGIN_TIME_SERVER
+}
+{setupId:callbackConfiguration
+}
+{setupId:macros
+}
+{setupId:additionalFiles
+PATH(STACK_RELATIVE):app/host/common-host-utilities.c
+PATH(STACK_RELATIVE):app/ip-ncp/management.c
+}
+{setupId:halOptions
+}
+
+# Plugin options

@@ -1,0 +1,4108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://zigbee.org/sep" targetNamespace="http://zigbee.org/sep" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.28">
+  <xs:annotation>
+    <xs:documentation>The Smart Energy Profile 2.0 model is organized into function sets, represented by sub-packages. However, all structures are defined inside a single namespace. 
+
+&lt;b&gt;Legal Notice&lt;/b&gt;
+
+Copyright 2011 © ZigBee Alliance, Inc. and HomePlug Powerline Alliance, Inc.  All rights Reserved.  This information within this document is the property of the ZigBee Alliance and the HomePlug Powerline Alliance and its use and disclosure are restricted.
+
+Elements of ZigBee Alliance and HomePlug Powerline Alliance specifications may be subject to third party intellectual property rights, including without limitation, patent, copyright or trademark rights (such a third party may or may not be a member of ZigBee and/or HomePlug).  ZigBee and HomePlug are not responsible and shall not be held responsible in any manner for identifying or failing to identify any or all such third party intellectual property rights.
+
+This document and the information contained herein are provided on an “AS IS” basis and ZigBee and HomePlug DISCLAIM ALL WARRANTIES EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO (A) ANY WARRANTY THAT THE USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OF THIRD PARTIES (INCLUDING WITHOUT LIMITATION ANY INTELLECTUAL PROPERTY RIGHTS INCLUDING PATENT, COPYRIGHT OR TRADEMARK RIGHTS) OR (B) ANY IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE OR NON-INFRINGEMENT. IN NO EVENT WILL ZIGBEE OR HOMEPLUG BE LIABLE FOR ANY LOSS OF PROFITS, LOSS OF BUSINESS, LOSS OF USE OF DATA, INTERRUPTION OF BUSINESS, OR FOR ANY OTHER DIRECT, INDIRECT, SPECIAL OR EXEMPLARY, INCIDENTIAL, PUNITIVE OR CONSEQUENTIAL DAMAGES OF ANY KIND, IN CONTRACT OR IN TORT, IN CONNECTION WITH THIS DOCUMENT OR THE INFORMATION CONTAINED HEREIN, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH LOSS OR DAMAGE. All Company, brand and product names may be trademarks that are the sole property of their respective owners.
+
+The above notice and this paragraph must be included on all copies of this document that are made.
+
+ZigBee Alliance, Inc.
+2400 Camino Ramon, Suite 375
+San Ramon, CA 94583
+
+HomePlug Powerline Alliance, Inc.
+5200 SW Macadam Ave, Suite 470
+Portland, OR  97239</xs:documentation>
+  </xs:annotation>
+  <xs:complexType name="DeviceCapability">
+    <xs:annotation>
+      <xs:documentation>Returned by the URI provided by DNS-SD, to allow clients to find the URIs to the resources in which they are interested.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="EndDeviceGroup">
+        <xs:sequence>
+          <xs:element name="ConfigurationLink" type="ConfigurationLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="DeviceInformationLink" type="DeviceInformationLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="EndDeviceGroupListLink" type="EndDeviceGroupListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="EndDeviceListLink" type="EndDeviceListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="LogEventListLink" type="LogEventListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="MirrorUsagePointListLink" type="MirrorUsagePointListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="NetworkStatusLink" type="NetworkStatusLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="PowerStatusLink" type="PowerStatusLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="SubscriptionListLink" type="SubscriptionListLink" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Time">
+    <xs:annotation>
+      <xs:documentation>Contains the representation of time, constantly updated.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Resource">
+        <xs:sequence>
+          <xs:element name="dstEndTime" minOccurs="1" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>Time at which daylight savings ends (dstOffset no longer applied).  Result of dstEndRule calculation.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="dstOffset" minOccurs="1" maxOccurs="1" type="TimeOffsetType">
+            <xs:annotation>
+              <xs:documentation>Daylight savings time offset from UTC</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="dstStartTime" minOccurs="1" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>Time at which daylight savings begins (apply dstOffset).  Result of dstStartRule calculation.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="localTime" minOccurs="0" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>Local time: UTC with all local time zone and daylight savings time offsets applied. Lower quality enumeration values are assumed to be more accurate.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="quality" minOccurs="1" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>Metric indicating the quality of the time source from which the service acquired time:
+3 - time obtained from external authoritative source such as NTP
+4 - time obtained from level 3 source
+5 - time manually set or obtained from level 4 source
+6 - time obtained from level 5 source
+All other values are reserved for future use.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="tzOffset" minOccurs="1" maxOccurs="1" type="TimeOffsetType">
+            <xs:annotation>
+              <xs:documentation>Local time zone offset from UTC. Does not include any daylight savings time offsets.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="UTCTime" minOccurs="1" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>Seconds since 00:00:00 1/1/1970</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="LogEvent">
+    <xs:annotation>
+      <xs:documentation>A time stamped instance of a significant event detected by the device.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="createdDateTime" minOccurs="1" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>The date and time that the event occurred.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="functionSet" minOccurs="1" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>If the  profileID indicates this is a the Smart Energy Profile, the functionSet is defined by the Zigbee Alliance  and SHALL be one of the values from the table below (Smart Energy Profile 2.0 function set identifiers).  If the profileID is anything else, the functionSet is defined by the  identified profile. 
+0	General (not specific to a function set)
+1	Publish and Subscribe
+2	End Device
+3	End Device Groups
+4	Response
+5	Demand Response and Load Control
+6	Metering
+7	Pricing
+8	Messaging
+9	Billing
+10	Prepayment
+11	Distributed Energy Resources
+12	Time
+13	Software  Download
+14	Device Information
+15	Power Status
+16	Network Status
+17	LogEvent Log
+18	Configuration
+19-255	Reserved</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="logEventCode" minOccurs="1" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>An 8 bit unsigned integer.  logEventCodes are scoped to a profile and a function set.  If the profile is Smart Energy, the logEventCode is defined by the Zigbee Alliance within one of the function sets of Smart Energy Profile 2.0.  If the profile is anything else, the logEventCode is defined by the specified profile.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="logEventPEN" minOccurs="0" maxOccurs="1" type="PENType">
+            <xs:annotation>
+              <xs:documentation>The Private Enterprise Number(PEN) of the issuer of the logEvent. Zigbee assigned logEventCodes use the Zigbee Alliance PEN, which SHALL be included.  Vendor assigned logEventCodes SHALL be accompanied with the vendor’s PEN, and SHALL be unique within a specific PEN (managed by the manufacturer). If the product includes libraries or sub-systems from another vendor, and the LogEvent is generated from one of these libraries or sub-systems, the PEN SHALL be the vendor PEN of the originating provider.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="profileID" minOccurs="1" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>A 8 bit unsigned integer. The profileID identifies which profile (HA, BA, SE, etc) defines the following event information.
+0	Not profile specific.
+1	Vendor Defined
+2	Smart Energy 
+3	Home Automation
+4	Building Automation
+5-255	Reserved</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="vendorDefined" minOccurs="0" maxOccurs="1" type="xs:boolean">
+            <xs:annotation>
+              <xs:documentation>If not included it is assumed to be FALSE.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="NetworkStatusLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of Configuration.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PowerConfiguration">
+    <xs:annotation>
+      <xs:documentation>Contains configuration related to the device's power sources</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Resource">
+        <xs:sequence>
+          <xs:element name="batteryInstallTime" minOccurs="0" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>Time/Date at which battery was installed,</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="lowChargeThreshold" minOccurs="0" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>In context of the PowerStatus resource, this is the value of EstimatedTimeRemaining below which BatteryStatus "low" is indicated and the ALM_LOW_BATTERY is raised.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PowerSourceType">
+    <xs:annotation>
+      <xs:documentation>0 - none
+1 - mains 
+2 - battery
+3 - local generation
+4 - emergency 
+5 - unknown</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="PowerStatus">
+    <xs:annotation>
+      <xs:documentation>Contains the status of the device's power sources</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Resource">
+        <xs:sequence>
+          <xs:element name="batteryStatus" minOccurs="1" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>Battery system status
+
+0 = unknown
+1 = normal (more than LowChargeThreshold remaining)
+2 = low (less than LowChargeThreshold remaining) 
+3 = depleted (0% charge remaining)
+4 = not applicable (mains powered only)</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="currentPowerSource" minOccurs="1" maxOccurs="1" type="PowerSourceType">
+            <xs:annotation>
+              <xs:documentation>This value will be fixed for devices powered by a single source.  This value may change for devices able to transition between multiple power sources (mains to battery backup, etc.).</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="estimatedChargeRemaining" minOccurs="0" maxOccurs="1" type="UInt32">
+            <xs:annotation>
+              <xs:documentation>Estimate of remaining battery charge as a percent of full charge.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="estimatedTimeRemaining" minOccurs="0" maxOccurs="1" type="UInt32">
+            <xs:annotation>
+              <xs:documentation>Estimated time (in seconds) to total battery charge depletion (under current load)</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="timeOnBattery" minOccurs="0" maxOccurs="1" type="UInt32">
+            <xs:annotation>
+              <xs:documentation>If the device is battery powered, this is the time since the device last switched to battery power, or the time since the device was restarted, whichever is less.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Registration">
+    <xs:annotation>
+      <xs:documentation>Registration represents an authorization to access the resources on a host.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="installCode" minOccurs="1" maxOccurs="1" type="UInt32">
+            <xs:annotation>
+              <xs:documentation>Contains the install code associated with the device registration.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SupportedLocale">
+    <xs:annotation>
+      <xs:documentation>Specifies a locale that is supported</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="locale" minOccurs="1" maxOccurs="1" type="LocaleType">
+            <xs:annotation>
+              <xs:documentation>The code for a locale that is supported</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Configuration">
+    <xs:annotation>
+      <xs:documentation>This resource contains various settings to control the operation of the device</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="locale" minOccurs="1" maxOccurs="1" type="LocaleType">
+            <xs:annotation>
+              <xs:documentation>RFC 4646 identifier of the language-region currently in use.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="PowerConfiguration" type="PowerConfiguration" minOccurs="0" maxOccurs="1" />
+          <xs:element name="TimeConfiguration" type="TimeConfiguration" minOccurs="0" maxOccurs="1" />
+          <xs:element name="userDeviceName" minOccurs="1" maxOccurs="1" type="String32">
+            <xs:annotation>
+              <xs:documentation>User assigned, convenience name used for network browsing displays, etc.  Example "My Thermostat"</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DeviceInformation">
+    <xs:annotation>
+      <xs:documentation>Contains identification and other information about the device.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Resource">
+        <xs:sequence>
+          <xs:element name="gUID" minOccurs="1" maxOccurs="1" type="HexBinary160">
+            <xs:annotation>
+              <xs:documentation>Globally Unique Identifier for this device. SHALL be a SHA1 hash of the device certificate.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="mfDate" minOccurs="1" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>Date/time of  of manufacture</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="mfHwVer" minOccurs="1" maxOccurs="1" type="String32">
+            <xs:annotation>
+              <xs:documentation>Manufacturer hardware version</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="mfID" minOccurs="1" maxOccurs="1" type="PENType">
+            <xs:annotation>
+              <xs:documentation>The manufacturer's IANA Enterprise Number.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="mfInfo" minOccurs="0" maxOccurs="1" type="String32">
+            <xs:annotation>
+              <xs:documentation>Manufacturer dependent information related to manufacture of this device</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="mfModel" minOccurs="1" maxOccurs="1" type="String32">
+            <xs:annotation>
+              <xs:documentation>Manufacturer's model number</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="mfSerNum" minOccurs="1" maxOccurs="1" type="String32">
+            <xs:annotation>
+              <xs:documentation>Manufacturer assigned serial number</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="primaryPower" minOccurs="1" maxOccurs="1" type="PowerSourceType">
+            <xs:annotation>
+              <xs:documentation>Primary source of power.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="secondaryPower" minOccurs="1" maxOccurs="1" type="PowerSourceType">
+            <xs:annotation>
+              <xs:documentation>Secondary source of power</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="SupportedLocaleListLink" type="SupportedLocaleListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="swActTime" minOccurs="1" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>Activation date/time of currently running software</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="swVer" minOccurs="1" maxOccurs="1" type="String32">
+            <xs:annotation>
+              <xs:documentation>Currently running software version</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="NetworkStatus">
+    <xs:annotation>
+      <xs:documentation>This resource contains network statistics information.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TimeConfiguration">
+    <xs:annotation>
+      <xs:documentation>Contains attributes related to the configuration of the time service.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="dstEndRule" minOccurs="1" maxOccurs="1" type="DstRuleType">
+        <xs:annotation>
+          <xs:documentation>Rule to calculate end of daylight savings time in the current year.  Result of dstEndRule must be greater than result of dstStartRule.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="dstOffset" minOccurs="1" maxOccurs="1" type="TimeOffsetType">
+        <xs:annotation>
+          <xs:documentation>Daylight savings time offset from UTC</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="dstStartRule" minOccurs="1" maxOccurs="1" type="DstRuleType">
+        <xs:annotation>
+          <xs:documentation>Rule to calculate start of daylight savings time in the current year. Result of dstEndRule must be greater than result of dstStartRule.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="tzOffset" minOccurs="1" maxOccurs="1" type="TimeOffsetType">
+        <xs:annotation>
+          <xs:documentation>Local time zone offset from UTC. Does not include any daylight savings time offsets.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Condition">
+    <xs:sequence>
+      <xs:element name="attributeIdentifier" minOccurs="1" maxOccurs="1" type="UInt8">
+        <xs:annotation>
+          <xs:documentation>0-255 = Reserved</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="lowerThreshold" minOccurs="1" maxOccurs="1" type="Int16">
+        <xs:annotation>
+          <xs:documentation>The value of the lower threshold</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="upperThreshold" minOccurs="1" maxOccurs="1" type="Int16">
+        <xs:annotation>
+          <xs:documentation>The value of the upper threshold</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Notification">
+    <xs:annotation>
+      <xs:documentation>Holds the information related to a client subscription to receive updates to a resource automatically.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="resource" minOccurs="1" maxOccurs="1" type="xs:anyURI">
+            <xs:annotation>
+              <xs:documentation>The resource for which a subscription is requested.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Resource" type="Resource" minOccurs="0" maxOccurs="1" />
+          <xs:element name="subscriptionURI" minOccurs="1" maxOccurs="1" type="xs:anyURI">
+            <xs:annotation>
+              <xs:documentation>The resource to which was subscribed.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Subscription">
+    <xs:annotation>
+      <xs:documentation>Holds the information related to a client subscription to receive updates to a resource automatically.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="Condition" type="Condition" minOccurs="0" maxOccurs="1" />
+          <xs:element name="limit" minOccurs="1" maxOccurs="1" type="Int16">
+            <xs:annotation>
+              <xs:documentation>Specifies the maximum number of items to be pushed upon notification. If "0" is specified, then subscriber is notified but then must request the updated representations.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="newResourceURI" minOccurs="0" maxOccurs="1" type="xs:anyURI">
+            <xs:annotation>
+              <xs:documentation>The new location of the resource, if moved.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="pushURI" minOccurs="1" maxOccurs="1" type="xs:anyURI">
+            <xs:annotation>
+              <xs:documentation>The resource to which to post the requested subscribed resources.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="resource" minOccurs="1" maxOccurs="1" type="xs:anyURI">
+            <xs:annotation>
+              <xs:documentation>The resource for which a subscription is requested.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="status" minOccurs="1" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>0 = Default Status
+1 = Subscription canceled, no additional information
+2 = Subscription canceled, resource moved
+3 = Subscription canceled, resource definition changed (e.g., SEP 2.0 to 2.1)
+4..255 = Reserved</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MessagingProgram">
+    <xs:annotation>
+      <xs:documentation>Provides a container for collections of text messages.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="ActiveTextMessageListLink" type="ActiveTextMessageListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="locale" minOccurs="1" maxOccurs="1" type="LocaleType">
+            <xs:annotation>
+              <xs:documentation>Indicates the language and region of the messages in this collection.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="TextMessageListLink" type="TextMessageListLink" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TextMessage">
+    <xs:annotation>
+      <xs:documentation>Text message such as a notification</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="createdDateTime" minOccurs="1" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>Date and time that this document was created.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="deviceCategory" minOccurs="1" maxOccurs="1" type="EndDeviceCategoryType">
+            <xs:annotation>
+              <xs:documentation>Bitmap indication of the device classes for which this message applies.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="interval" minOccurs="1" maxOccurs="1" type="DateTimeInterval">
+            <xs:annotation>
+              <xs:documentation>Specifies the time interval during which the message should be displayed</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="messageLength" minOccurs="1" maxOccurs="1" type="UInt16">
+            <xs:annotation>
+              <xs:documentation>Length of a text message.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="originator" minOccurs="1" maxOccurs="1" type="String20">
+            <xs:annotation>
+              <xs:documentation>Originator</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="priority" minOccurs="1" maxOccurs="1" type="PriorityType">
+            <xs:annotation>
+              <xs:documentation>Priority of the notification</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="status" minOccurs="1" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>0 - Scheduled
+1 - Active
+2 - Cancelled</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="textMessage" minOccurs="1" maxOccurs="1" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>Field for text message such as message from utility to a HAN device for a notification. Minimum number of English characters that need to be handled is 100. Larger messages can be sent, but they may be truncated.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PriorityType">
+    <xs:annotation>
+      <xs:documentation>Indicates the priority of a message:
+0 - Low
+1 - Normal
+2 - High
+3 - Critical</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="DemandResponseProgram">
+    <xs:annotation>
+      <xs:documentation>Demand response program.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="ActiveEndDeviceControlListLink" type="ActiveEndDeviceControlListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="EndDeviceControlListLink" type="EndDeviceControlListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="primacy" minOccurs="1" maxOccurs="1" type="PrimacyType">
+            <xs:annotation>
+              <xs:documentation>Indicates the relative primacy of the provider of this program.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DutyCycle">
+    <xs:annotation>
+      <xs:documentation>Duty cycle is a method of control and defines the maximum ON state of the device as a percentage of a defined time period; this value is provided through the normalValue attribute.  For example, if the normalValue is 80, the device would be in an “on state” for 80% of the time for the duration of the event.  Range of the value is 0 to 100.  All other values are reserved for future use.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="normalValue" minOccurs="1" maxOccurs="1" type="UInt8">
+        <xs:annotation>
+          <xs:documentation>Defines the maximum ON state duty cycle as a percentage of time.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="EndDeviceControl">
+    <xs:annotation>
+      <xs:documentation>Instructs an PANDeviceAsset (or EndDeviceGroup) to perform a specified action.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="creationTime" minOccurs="1" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>The date and time when the event was created by the service provider.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="deviceCategory" minOccurs="1" maxOccurs="1" type="EndDeviceCategoryType">
+            <xs:annotation>
+              <xs:documentation>Specifies the bitmap specifying the category of devices that should respond.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="drProgramMandatory" minOccurs="1" maxOccurs="1" type="xs:boolean">
+            <xs:annotation>
+              <xs:documentation>A flag to indicate if the EndDeviceControl is considered a mandatory event as defined by the service provider issuing the EndDeviceControl. The drProgramMandatory flag alerts the client/user that they will be subject to penalty or ineligibility based on the service provider’s program rules for that EndDeviceCategory.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="DutyCycle" type="DutyCycle" minOccurs="0" maxOccurs="1" />
+          <xs:element name="loadShiftForward" minOccurs="1" maxOccurs="1" type="xs:boolean">
+            <xs:annotation>
+              <xs:documentation>Indicates that the event intends to increase consumption. A value of true indicates the intention to increase usage value, and a value of false indicates the intention to decrease usage.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Offset" type="Offset" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="overrideDuration" minOccurs="1" maxOccurs="1" type="UInt16">
+            <xs:annotation>
+              <xs:documentation>The overrideDuration attribute provides a duration, in seconds, for which a client device is allowed to override an EndDeviceControl as contractually agreed upon with a service provider.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="scheduledInterval" minOccurs="1" maxOccurs="1" type="RandomizedDateTimeInterval">
+            <xs:annotation>
+              <xs:documentation>Specifies the time window of the control event.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="SetPoint" type="SetPoint" minOccurs="0" maxOccurs="2" />
+          <xs:element name="Status" type="Status" minOccurs="1" maxOccurs="1" />
+          <xs:element name="TargetReduction" type="TargetReduction" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="LoadShedAvailability">
+    <xs:annotation>
+      <xs:documentation>Indicates current consumption status and ability to shed load.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="availabilityDuration" minOccurs="0" maxOccurs="1" type="UInt32">
+            <xs:annotation>
+              <xs:documentation>Indicates for how many seconds the consuming device will be able to reduce consumption of the commodity indicated in the Type attribute.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="consuming" minOccurs="1" maxOccurs="1" type="xs:boolean">
+            <xs:annotation>
+              <xs:documentation>Indicates if the device on the network is consuming load.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="DemandResponseProgramLink" type="DemandResponseProgramLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="shed" minOccurs="1" maxOccurs="1" type="xs:boolean">
+            <xs:annotation>
+              <xs:documentation>Indicates if the device on the network is capable of shedding load.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="type" minOccurs="1" maxOccurs="1" type="UnitType">
+            <xs:annotation>
+              <xs:documentation>A type of commodity. 
+
+Value    Type 
+0          kWh
+1          kW 
+2          Watts
+3          Cubic Meters
+4          Cubit Feet
+5          US Gallons
+6          Imperial Gallons
+7          BTUs
+8          Litters
+9          kPA (gauge)
+10        kPA (absolute) 
+11        Mega Joule 
+12        Unitless</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="value" minOccurs="1" maxOccurs="1" type="UInt16">
+            <xs:annotation>
+              <xs:documentation>Amount of load that the device can shed in the commodity indicated in the Type attribute.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Offset">
+    <xs:annotation>
+      <xs:documentation>If a temperature offset is applied, the value attribute will be calculated as follows: 
+Temperature offset (Delta Temperature) in degrees Celsius, as follows: Delta Temperature Offset / 10 = delta temperature in degrees Celsius where 0.0°C &amp;lt;= temperature &amp;lt;= 25.4 ºC, corresponding to a Temperature in the range 0x00 to 0xFE.  The maximum resolution this format allows is 0.1 ºC
+If a Load Adjustment Percentage is applied, the value attribute will be calculated as follows: 
+A 10% load adjustment percentage will establish an energy usage limit equal to 90% of the client implementation’s specific average energy usage.  Each load adjustment percentage is referenced to the client implementation’s specific average energy usage.  There are no cumulative effects.  Range of the value is 0 to 100.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="type" minOccurs="1" maxOccurs="1" type="OffsetType">
+        <xs:annotation>
+          <xs:documentation>Represents the type of offset being applied.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" minOccurs="1" maxOccurs="1" type="UInt8">
+        <xs:annotation>
+          <xs:documentation>The value change requested for the offset type specified, in degree C / 10 (if heating or cooling) or tenths of a percent (if load adjustment percentage). The value should be added to the normal set point for cooling, and subtracted for heating and load adjustment.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="OffsetType">
+    <xs:annotation>
+      <xs:documentation>The offset types defined for offset targets.
+0 - Cooling Offset 
+1 - Heating Offset 
+2 - Load Adjustment Percentage</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="SetPoint">
+    <xs:annotation>
+      <xs:documentation>The SetPoint object is used to apply a specific temperature value to a temperature control device.  The Type attribute will indicate what type of set point SHALL be applied.  The Value attribute SHALL be calculated as follows:
+Cooling/Heating Temperature Set Point / 100 = temperature in degrees Celsius where -273.15°C &amp;lt;= temperature &amp;lt;= 327.67°C, corresponding to a Cooling and/or Heating Temperature Set Point in the range 0x954d to 0x7fff. (Note that "0x" is not used in actual representations.) The maximum resolution this format allows is 0.01°C.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="type" minOccurs="1" maxOccurs="1" type="SetpointType">
+        <xs:annotation>
+          <xs:documentation>Bit encoded field representing the type of SetPoint being applied. 
+
+Bit       Type 
+0          Cooling Setpoint
+1          Heating Setpoint
+2          Other</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" minOccurs="1" maxOccurs="1" type="UInt16">
+        <xs:annotation>
+          <xs:documentation>This attribute represents the temperature in degrees Celsius / 100. (Hundredths of a degree C)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SetpointType">
+    <xs:annotation>
+      <xs:documentation>The set point types defined for end device control set point targets.
+0 - Cooling Setpoint 
+1 - Heating Setpoint</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="TargetReduction">
+    <xs:annotation>
+      <xs:documentation>Threshold to which a device should reduce its load.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="type" minOccurs="1" maxOccurs="1" type="UnitType">
+        <xs:annotation>
+          <xs:documentation>Bit encoded field representing the type of reduction requested. 
+
+Value    Type 
+0          kWh
+1          kW 
+2          Watts
+3          Cubic Meters
+4          Cubit Feet
+5          US Gallons
+6          Imperial Gallons
+7          BTUs
+8          Litters
+9          kPA (gauge)
+10        kPA (absolute) 
+11        Mega Joule 
+12        Unitless</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" minOccurs="1" maxOccurs="1" type="UInt16">
+        <xs:annotation>
+          <xs:documentation>Indicates the requested amount of the relevant commodity to be reduced.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ConsumptionTariffInterval">
+    <xs:annotation>
+      <xs:documentation>One of a sequence of thresholds defined in terms of consumption quantity of a service such as electricity, water, gas, etc. It defines the steps or blocks in a step tariff structure, where startValue simultaneously defines the entry value of this step and the closing value of the previous step. Where consumption is &amp;gt;= startValue it falls within this block and where consumption is &amp;lt; startValue it falls within the previous block.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Cost" type="Cost" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="price" minOccurs="0" maxOccurs="1" type="UInt32">
+        <xs:annotation>
+          <xs:documentation>The fixed portion of the charge for this rate component, per unit of measure defined by the associated ReadingType, in currency specified in CustomerAccount.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="startValue" minOccurs="1" maxOccurs="1" type="UInt48">
+        <xs:annotation>
+          <xs:documentation>The lowest level of consumption that defines the starting point of this consumption step or block. The block interval extends to the start of the next interval or until it is reset to the start of the first interval by TariffProfile.tariffCycle.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Cost">
+    <xs:annotation>
+      <xs:documentation>A cost element, typically used for environmental costs.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="amount" minOccurs="1" maxOccurs="1" type="UInt32">
+        <xs:annotation>
+          <xs:documentation>The estimated or actual environmental or other cost, per unit defined by the ReadingType, for this RateComponent. e.g. each kWh consumed produces the specified amount of carbon emissions.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="costKind" minOccurs="1" maxOccurs="1" type="CostKindType">
+        <xs:annotation>
+          <xs:documentation>The kind of cost referred to in the amount.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CostKindType">
+    <xs:annotation>
+      <xs:documentation>0 - Carbon Dioxide emissions, in grams per unit
+1 - Sulfur Dioxide emissions, in grams per unit
+2 - Nitrogen Oxides emissions, in grams per unit
+3 - Renewable generation, as a percentage of overall generation</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="RateComponent">
+    <xs:annotation>
+      <xs:documentation>Specifies the applicable charges for a single component of the rate, which could be generation price or consumption price, for example.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="ActiveTimeTariffIntervalListLink" type="ActiveTimeTariffIntervalListLink" minOccurs="1" maxOccurs="1" />
+          <xs:element name="powerLimit" minOccurs="0" maxOccurs="1" type="UInt16">
+            <xs:annotation>
+              <xs:documentation>Specifies the maximum instantaneous power (in kW) recommended for the usage point and given rate / tariff.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="ReadingTypeLink" type="ReadingTypeLink" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>Provides indication of the ReadingType with which this price is associated.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="TimeTariffIntervalListLink" type="TimeTariffIntervalListLink" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TariffProfile">
+    <xs:annotation>
+      <xs:documentation>A schedule of charges; structure that allows the definition of tariff structures such as step (block) and time of use (tier) when used in conjunction with TimeTariffInterval, ConsumptionTariffInterval, and Charge.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="rateCode" minOccurs="0" maxOccurs="1" type="String20">
+            <xs:annotation>
+              <xs:documentation>The rate code for this tariff profile.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="RateComponentListLink" type="RateComponentListLink" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TimeTariffInterval">
+    <xs:annotation>
+      <xs:documentation>One of a sequence of time intervals defined in terms of real time. It is typically used in association with TariffProfile to define the intervals in a time of use tariff structure, where startDateTime simultaneously determines the starting point of this interval and the ending point of the previous interval.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="ConsumptionTariffInterval" type="ConsumptionTariffInterval" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="creationTime" minOccurs="1" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>The date and time when the event was created.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="interval" minOccurs="1" maxOccurs="1" type="RandomizedDateTimeInterval">
+            <xs:annotation>
+              <xs:documentation>The interval defines the time period during which the indicated price characteristics apply.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="isActive" minOccurs="1" maxOccurs="1" type="xs:boolean">
+            <xs:annotation>
+              <xs:documentation>Indicates that this interval is active.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="numPriceLevels" minOccurs="1" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>Total number of price levels</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="priceLevel" minOccurs="1" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>Price level (out of total number indicated)</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="IntervalReading">
+    <xs:annotation>
+      <xs:documentation>Specific value measured by a meter or other asset.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ReadingQuality" type="ReadingQuality" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="timePeriod" minOccurs="0" maxOccurs="1" type="DateTimeInterval">
+        <xs:annotation>
+          <xs:documentation>The time interval associated with the reading. If not specified, then defaults to the next interval of the same duration as the last.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" minOccurs="1" maxOccurs="1" type="UInt48">
+        <xs:annotation>
+          <xs:documentation>Value in units specified by ReadingType</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="QualityOfReading">
+    <xs:annotation>
+      <xs:documentation>List of codes indicating the quality of the reading, using specification:
+
+0 - valid: data that has gone through all required validation checks and either passed them all or has been verified 
+7 - manually edited: Replaced or approved by a human
+8 - estimated using reference day: data value was replaced by a machine computed value based on analysis of historical data using the same type of measurement.
+9 - estimated using linear interpolation: data value was computed using linear interpolation based on the readings before and after it
+10 - questionable: data that has failed one or more checks
+11 - derived: data that has been calculated (using logic or mathematical operations), not necessarily measured directly 
+12 - projected (forecast): data that has been calculated as a projection or forecast of future readings</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="MeterReading">
+    <xs:annotation>
+      <xs:documentation>Set of values obtained from the meter.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="MeterReadingBase">
+        <xs:sequence>
+          <xs:element name="IntervalBlockListLink" type="IntervalBlockListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="ReadingLink" type="ReadingLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="ReadingTypeLink" type="ReadingTypeLink" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="IntervalBlock">
+    <xs:annotation>
+      <xs:documentation>A block of IntervalReadings of the ReadingType indicated by the parent MeterReading.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="interval" minOccurs="1" maxOccurs="1" type="DateTimeInterval">
+            <xs:annotation>
+              <xs:documentation>Specifies the time range during which the contained readings were taken.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="IntervalReading" type="IntervalReading" minOccurs="0" maxOccurs="96" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Reading">
+    <xs:annotation>
+      <xs:documentation>Specific value measured by a meter or other asset. Each Reading is of the type indicated by the ReadingType associated with the containing MeterReading.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Resource">
+        <xs:sequence>
+          <xs:element name="ReadingQuality" type="ReadingQuality" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="timeStamp" minOccurs="0" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>The date and time of a reading.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="value" minOccurs="1" maxOccurs="1" type="UInt48">
+            <xs:annotation>
+              <xs:documentation>Value in units specified by ReadingType</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ReadingType">
+    <xs:annotation>
+      <xs:documentation>Type of data conveyed by a specific Reading.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="accumulationBehaviour" minOccurs="0" maxOccurs="1" type="AccumulationBehaviourType">
+            <xs:annotation>
+              <xs:documentation>The “accumulation behaviour” indicates how the value is represented to accumulate over time.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="commodity" minOccurs="0" maxOccurs="1" type="CommodityType">
+            <xs:annotation>
+              <xs:documentation>Commodity</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="consumptionTier" minOccurs="0" maxOccurs="1" type="ConsumptionTierType">
+            <xs:annotation>
+              <xs:documentation>Consumption tier</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="currency" minOccurs="0" maxOccurs="1" type="CurrencyCode">
+            <xs:annotation>
+              <xs:documentation>The currency code indicating the currency for monetary values (kind="3").</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="dataQualifier" minOccurs="0" maxOccurs="1" type="DataQualifierType">
+            <xs:annotation>
+              <xs:documentation>The data type can be used to describe a salient attribute of the data. Possible values are average, absolute, and etc.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="flowDirection" minOccurs="0" maxOccurs="1" type="FlowDirectionType">
+            <xs:annotation>
+              <xs:documentation>Anything involving current might have a flow direction. Possible values include forward and reverse.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="kind" minOccurs="0" maxOccurs="1" type="KindType">
+            <xs:annotation>
+              <xs:documentation>Compound class that contains kindCategory and kindIndex</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="phase" minOccurs="0" maxOccurs="1" type="PhaseCode">
+            <xs:annotation>
+              <xs:documentation>Contains phase information associated with the type.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="powerOfTenMultiplier" minOccurs="0" maxOccurs="1" type="PowerOfTenMultiplierType">
+            <xs:annotation>
+              <xs:documentation>Power of ten multipliers</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="timeAttribute" minOccurs="0" maxOccurs="1" type="TimeAttributeType">
+            <xs:annotation>
+              <xs:documentation>Time interval</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="tou" minOccurs="0" maxOccurs="1" type="TOUType">
+            <xs:annotation>
+              <xs:documentation>TOU type</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="uom" minOccurs="0" maxOccurs="1" type="UomType">
+            <xs:annotation>
+              <xs:documentation>Compound class that contains metricPrefix, uomCategory, and uomIndex</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ReadingQuality">
+    <xs:annotation>
+      <xs:documentation>Quality of a specific reading value or interval reading value. Note that more than one Quality may be applicable to a given Reading. Typically not used unless problems or unusual conditions occur (i.e., quality for each Reading is assumed to be 'Good' (valid) unless stated otherwise in associated ReadingQuality).</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="quality" minOccurs="1" maxOccurs="1" type="QualityOfReading">
+        <xs:annotation>
+          <xs:documentation>Quality, to be specified if different than 'raw'.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ChargeReservation">
+    <xs:annotation>
+      <xs:documentation>Description of anything that changes through time. Time schedule is used to perform a single-valued function of time. Use inherited 'category' attribute to give additional information on this schedule, such as: periodic (hourly, daily, weekly, monthly, etc.), day of the month, by date, calendar (specific times and dates).</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="ChargerLink" type="ChargerLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="scheduledInterval" minOccurs="1" maxOccurs="1" type="DateTimeInterval">
+            <xs:annotation>
+              <xs:documentation>Scheduled date and time interval.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="status" minOccurs="1" maxOccurs="1" type="ReservationStatusType">
+            <xs:annotation>
+              <xs:documentation>The current status of the reservation request</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ChargerStatus">
+    <xs:annotation>
+      <xs:documentation>Current charger status</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="batChaSt" minOccurs="1" maxOccurs="1" type="UInt8">
+        <xs:annotation>
+          <xs:documentation>Battery charger charging mode status 
+0 Not applicable / Unknown
+1 Off
+2 Operational mode
+3 Test mode</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="chaTms" minOccurs="0" maxOccurs="1" type="UInt32">
+        <xs:annotation>
+          <xs:documentation>Charging time since last off/reset (at current connection)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DER">
+    <xs:annotation>
+      <xs:documentation>Distributed energy resource information</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Resource">
+        <xs:sequence>
+          <xs:element name="ahRating" minOccurs="0" maxOccurs="1" type="AmpereHour">
+            <xs:annotation>
+              <xs:documentation>Amp-hour capacity rating</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="DERStatusLink" type="DERStatusLink" minOccurs="1" maxOccurs="1" />
+          <xs:element name="nominalVoltage" minOccurs="1" maxOccurs="1" type="Voltage">
+            <xs:annotation>
+              <xs:documentation>Nominal voltage of unit</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="powerLimit" minOccurs="1" maxOccurs="1" type="ActivePower">
+            <xs:annotation>
+              <xs:documentation>The maximum active power capability of the resource.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="type" minOccurs="1" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>Type of DER:
+0 - Not applicable / Unknown
+1 - Battery
+2 - Photovoltaic
+3 - Fuel Cell
+4 - Steam Turbine
+5 - Wind 
+6 - Hydroelectric
+7 - Combustion Engine</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DERControl">
+    <xs:annotation>
+      <xs:documentation>Distributed Energy Resource (DER) control information</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="gnBlk" minOccurs="0" maxOccurs="1" type="xs:boolean">
+            <xs:annotation>
+              <xs:documentation>Set generator as blocked: True = blocked from being turned on</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="gnCtl" minOccurs="0" maxOccurs="1" type="xs:boolean">
+            <xs:annotation>
+              <xs:documentation>Starts or stops the generator: Start = True, Stop = False</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="gnRL" minOccurs="0" maxOccurs="1" type="xs:boolean">
+            <xs:annotation>
+              <xs:documentation>Raises or lowers the generation level by steps: Raise = True, Lower = False</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="maxOperatingPower" minOccurs="1" maxOccurs="1" type="ActivePower">
+            <xs:annotation>
+              <xs:documentation>Maximum active operating power (Watts)</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="scheduledInterval" minOccurs="1" maxOccurs="1" type="RandomizedDateTimeInterval">
+            <xs:annotation>
+              <xs:documentation>Specifies the time window of the control event.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Status" type="Status" minOccurs="0" maxOccurs="1" />
+          <xs:element name="targetPowerFactor" minOccurs="1" maxOccurs="1" type="PowerFactor">
+            <xs:annotation>
+              <xs:documentation>Target power factor</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="varSupportMode" minOccurs="1" maxOccurs="1" type="xs:boolean">
+            <xs:annotation>
+              <xs:documentation>Indicates that VAr support mode is requested during the indicated interval.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DERStatus">
+    <xs:annotation>
+      <xs:documentation>Current distributed energy resource status</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="estimatedTimeRemaining" minOccurs="1" maxOccurs="1" type="UInt32">
+            <xs:annotation>
+              <xs:documentation>Estimated time (in seconds) to total depletion (under current load)</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="stateOfCharge" minOccurs="1" maxOccurs="1" type="PerCent">
+            <xs:annotation>
+              <xs:documentation>State of charge / availability in per cent of total</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="status" minOccurs="0" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>Distributed energy resource system status
+0 = unknown
+1 = normal (more than LowChargeThreshold remaining)
+2 = low (less than LowChargeThreshold remaining) 
+3 = depleted (0% charge remaining)
+4 = not applicable (mains powered only)</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="statusTime" minOccurs="1" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>Timestamp of the status</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="testResult" minOccurs="0" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>Test result:
+0 - Not applicable / Unknown
+1 - Good
+2 - Warning
+3 - Alarm
+4 - Failed</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="voltageHigh" minOccurs="0" maxOccurs="1" type="xs:boolean">
+            <xs:annotation>
+              <xs:documentation>Voltage low or undercharged: True: low or undercharged. Default is "false" if not specified.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="voltageLow" minOccurs="0" maxOccurs="1" type="xs:boolean">
+            <xs:annotation>
+              <xs:documentation>Voltage low or undercharged: True: low or undercharged</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ReservationStatusType">
+    <xs:annotation>
+      <xs:documentation>0 - Requested
+1 - Pending
+2 - Approved
+3 - Revoked</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="ActivePower">
+    <xs:annotation>
+      <xs:documentation>Real Power, in Watts</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="multiplier" minOccurs="0" maxOccurs="1" type="PowerOfTenMultiplierType">
+        <xs:annotation>
+          <xs:documentation>Multiplier for 'unit'.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="unit" minOccurs="0" maxOccurs="1" type="UomType">
+        <xs:annotation>
+          <xs:documentation>Unit in symbol</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" minOccurs="0" maxOccurs="1" type="UInt16">
+        <xs:annotation>
+          <xs:documentation>Value in units specified</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ActivePowerChargeRate">
+    <xs:annotation>
+      <xs:documentation>Product of RMS value of the voltage and the RMS value of the in-phase component of the current</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="multiplier" minOccurs="0" maxOccurs="1" type="PowerOfTenMultiplierType">
+        <xs:annotation>
+          <xs:documentation>Multiplier for 'unit'.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="unit" minOccurs="0" maxOccurs="1" type="UomType">
+        <xs:annotation>
+          <xs:documentation>Unit in symbol</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" minOccurs="0" maxOccurs="1" type="UInt16">
+        <xs:annotation>
+          <xs:documentation>Value in units specified</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AmpereHour">
+    <xs:annotation>
+      <xs:documentation>A unit of electric charge</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="multiplier" minOccurs="0" maxOccurs="1" type="PowerOfTenMultiplierType">
+        <xs:annotation>
+          <xs:documentation>Multiplier for 'unit'.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="unit" minOccurs="0" maxOccurs="1" type="UomType">
+        <xs:annotation>
+          <xs:documentation>Unit in symbol</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" minOccurs="0" maxOccurs="1" type="UInt16">
+        <xs:annotation>
+          <xs:documentation>Value in units specified</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Charger">
+    <xs:annotation>
+      <xs:documentation>Charge function is for battery charging control and actual measurements are through metering, as is the case of any type of energy source.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="ChargerStatus" type="ChargerStatus" minOccurs="0" maxOccurs="1" />
+          <xs:element name="powerRequired" minOccurs="1" maxOccurs="1" type="ActivePower">
+            <xs:annotation>
+              <xs:documentation>Charging power required (Watts)</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="rate" minOccurs="1" maxOccurs="1" type="ActivePowerChargeRate">
+            <xs:annotation>
+              <xs:documentation>Recharge rate (Amps)</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="type" minOccurs="1" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>Type of charger: 
+0 Not applicable / Unknown
+1 Constant voltage
+2 Constant current</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DERProgram">
+    <xs:annotation>
+      <xs:documentation>Distributed Energy Resource program.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="ActiveChargeReservationListLink" type="ActiveChargeReservationListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="ActiveDERControlListLink" type="ActiveDERControlListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="ChargeReservationListLink" type="ChargeReservationListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="DERControlListLink" type="DERControlListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="primacy" minOccurs="1" maxOccurs="1" type="PrimacyType">
+            <xs:annotation>
+              <xs:documentation>Indicates whether this program is associated with a primary provider.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PowerFactor">
+    <xs:annotation>
+      <xs:documentation>Ratio of real to apparent power</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="multiplier" minOccurs="0" maxOccurs="1" type="PowerOfTenMultiplierType">
+        <xs:annotation>
+          <xs:documentation>Multiplier for 'unit'.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="unit" minOccurs="0" maxOccurs="1" type="UomType">
+        <xs:annotation>
+          <xs:documentation>Unit in symbol</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" minOccurs="0" maxOccurs="1" type="UInt16">
+        <xs:annotation>
+          <xs:documentation>Value in units specified</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Voltage">
+    <xs:annotation>
+      <xs:documentation>The electric potential difference between two points.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="multiplier" minOccurs="0" maxOccurs="1" type="PowerOfTenMultiplierType">
+        <xs:annotation>
+          <xs:documentation>Multiplier for 'unit'.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="unit" minOccurs="0" maxOccurs="1" type="UomType">
+        <xs:annotation>
+          <xs:documentation>Unit in symbol</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" minOccurs="0" maxOccurs="1" type="UInt16">
+        <xs:annotation>
+          <xs:documentation>Value in units specified</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AccountBalance">
+    <xs:annotation>
+      <xs:documentation>Prepayment (inherited from CIM SDPAccountingFunction)</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Resource">
+        <xs:sequence>
+          <xs:element name="availableCredit" minOccurs="1" maxOccurs="1" type="AccountingUnit">
+            <xs:annotation>
+              <xs:documentation>The value is the balance of the sum of credits minus the sum of charges from the CreditRegisters and the ChargeRegisters. The sum might be complex function.
+The units are either in currency units or service units, depending on the value of accountingMode.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="creditStatus" minOccurs="0" maxOccurs="1" type="CreditStatusType">
+            <xs:annotation>
+              <xs:documentation>Credit status</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="emergencyCredit" minOccurs="0" maxOccurs="1" type="AccountingUnit">
+            <xs:annotation>
+              <xs:documentation>The amount of Emergency Credit still available on the Metering Device.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="emergencyCreditStatus" minOccurs="0" maxOccurs="1" type="CreditStatusType">
+            <xs:annotation>
+              <xs:documentation>Emergency credit status</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="AccountingUnit">
+    <xs:annotation>
+      <xs:documentation>Unit for accounting; use either 'energyUnit' or 'currencyUnit' to specify the unit for 'value'.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="energyUnit" minOccurs="0" maxOccurs="1" type="RealEnergy">
+        <xs:annotation>
+          <xs:documentation>Unit of service.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="monetaryUnit" minOccurs="0" maxOccurs="1" type="CurrencyCode">
+        <xs:annotation>
+          <xs:documentation>Unit of currency.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="multiplier" minOccurs="0" maxOccurs="1" type="PowerOfTenMultiplierType">
+        <xs:annotation>
+          <xs:documentation>Multiplier for the 'energyUnit' or 'monetaryUnit'.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" minOccurs="0" maxOccurs="1" type="UInt48">
+        <xs:annotation>
+          <xs:documentation>Value of the monetary aspect</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CreditRegister">
+    <xs:annotation>
+      <xs:documentation>A class that contains credit amount and type</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="creditAmount" minOccurs="1" maxOccurs="1" type="AccountingUnit">
+            <xs:annotation>
+              <xs:documentation>Credit amount in favour of the customer.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="creditType" minOccurs="0" maxOccurs="1" type="CreditTypeType">
+            <xs:annotation>
+              <xs:documentation>Specifies the type of credit in this register</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="effectiveTime" minOccurs="1" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>The UTC date/time when the credit register became effective.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="token" minOccurs="1" maxOccurs="1" type="String32">
+            <xs:annotation>
+              <xs:documentation>Contains the value of a token that is associated with this credit register</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CreditStatusType">
+    <xs:annotation>
+      <xs:documentation>0 - Credit Ok
+1 - Credit Low
+2 - Credit Exhausted
+3 - Credit Negative</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="CreditTypeChange">
+    <xs:annotation>
+      <xs:documentation>Specifies a change to the credit type.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="newType" minOccurs="1" maxOccurs="1" type="CreditTypeType">
+        <xs:annotation>
+          <xs:documentation>The new credit type, to take effect at the time specified by startTime</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="startTime" minOccurs="1" maxOccurs="1" type="TimeType">
+        <xs:annotation>
+          <xs:documentation>The date/time when the change is to take effect.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CreditTypeType">
+    <xs:annotation>
+      <xs:documentation>0 - Regular
+1 - Emergency
+2 - Regular, then Emergency
+3 - Emergency, then Regular</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="Prepayment">
+    <xs:annotation>
+      <xs:documentation>Prepayment (inherited from CIM SDPAccountingFunction)</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="AccountBalanceLink" type="AccountBalanceLink" minOccurs="1" maxOccurs="1" />
+          <xs:element name="ActiveCreditRegisterListLink" type="ActiveCreditRegisterListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="ActiveSupplyInterruptionOverrideListLink" type="ActiveSupplyInterruptionOverrideListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="creditExpiryLevel" minOccurs="0" maxOccurs="1" type="AccountingUnit">
+            <xs:annotation>
+              <xs:documentation>The value is a predefined set point for the level of the availableCredit to reach when the service will be interrupted. In the case of a prepayment meter the interruption is typically implemented by means of an electro-mechanical switch and the value is typically set = 0.
+The units are either in currency units or service units, depending on the value of accountingMode.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="CreditRegisterListLink" type="CreditRegisterListLink" minOccurs="1" maxOccurs="1" />
+          <xs:element name="lowCreditWarningLevel" minOccurs="0" maxOccurs="1" type="AccountingUnit">
+            <xs:annotation>
+              <xs:documentation>The value is a predefined set point for the level of the availableCredit to reach when a warning will be indicated to the customer. It serves to warn the customer that it is time to purchase more credit in the case of a prepayment meter implementation.
+The units are either in currency units or service units, depending on the value of accountingMode.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="lowEmergencyCreditWarningLevel" minOccurs="0" maxOccurs="1" type="AccountingUnit">
+            <xs:annotation>
+              <xs:documentation>The value is a predefined set point for the level of the emergencyCredit to reach when a warning will be indicated to the customer. It serves to warn the customer that it is time to purchase more emergency credit in the case of a prepayment meter implementation.
+The units are either in currency units or service units, depending on the value of accountingMode.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="prepayMode" minOccurs="1" maxOccurs="1" type="PrepayModeType">
+            <xs:annotation>
+              <xs:documentation>The Payment Control attribute represents the payment mechanisms currently enabled within the Metering Device.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="PrepayOperationStatusLink" type="PrepayOperationStatusLink" minOccurs="1" maxOccurs="1" />
+          <xs:element name="SupplyInterruptionOverrideListLink" type="SupplyInterruptionOverrideListLink" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PrepayModeType">
+    <xs:annotation>
+      <xs:documentation>0 - Central Wallet
+1 - ESI
+2 - Local
+3 - Credit</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="PrepayOperationStatus">
+    <xs:annotation>
+      <xs:documentation>Prepayment (inherited from CIM SDPAccountingFunction)</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Resource">
+        <xs:sequence>
+          <xs:element name="creditTypeChange" minOccurs="0" maxOccurs="1" type="CreditTypeChange">
+            <xs:annotation>
+              <xs:documentation>Specifies a new credit type</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="creditTypeInUse" minOccurs="0" maxOccurs="1" type="CreditTypeType">
+            <xs:annotation>
+              <xs:documentation>The current credit type in use</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="serviceChange" minOccurs="0" maxOccurs="1" type="ServiceChange">
+            <xs:annotation>
+              <xs:documentation>Specifies a new credit status.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="serviceStatus" minOccurs="1" maxOccurs="1" type="ServiceStatusType">
+            <xs:annotation>
+              <xs:documentation>The current status of the service</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ServiceChange">
+    <xs:annotation>
+      <xs:documentation>Specifies a change to the service status.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="newStatus" minOccurs="1" maxOccurs="1" type="CreditStatusType">
+        <xs:annotation>
+          <xs:documentation>The new service status, to take effect at the time specified by startTime</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="startTime" minOccurs="1" maxOccurs="1" type="TimeType">
+        <xs:annotation>
+          <xs:documentation>The date/time when the change is to take effect.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ServiceStatusType">
+    <xs:annotation>
+      <xs:documentation>0 - Connected
+1 - Disconnected
+2 - Armed for Connect
+3 - Armed for Disconnect
+4 - No Contactor
+5 - Other</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="SupplyInterruptionOverride">
+    <xs:annotation>
+      <xs:documentation>Specifies a time interval during which supply will not be interrupted.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="interval" minOccurs="1" maxOccurs="1" type="DateTimeInterval" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RealEnergy">
+    <xs:annotation>
+      <xs:documentation>Real electrical energy</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="multiplier" minOccurs="0" maxOccurs="1" type="PowerOfTenMultiplierType">
+        <xs:annotation>
+          <xs:documentation>Multiplier for 'unit'.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="unit" minOccurs="0" maxOccurs="1" type="UomType">
+        <xs:annotation>
+          <xs:documentation>Unit in symbol</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" minOccurs="0" maxOccurs="1" type="UInt48">
+        <xs:annotation>
+          <xs:documentation>Value of the energy in units specified in "unit"</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="BillingPeriod">
+    <xs:annotation>
+      <xs:documentation>A schedule of charges; structure that allows the definition of tariff structures such as step (block) and time of use (tier) when used in conjunction with TimeTariffInterval, ConsumptionTariffInterval, and Charge.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="interval" minOccurs="0" maxOccurs="1" type="DateTimeInterval">
+            <xs:annotation>
+              <xs:documentation>The time interval for this billing period.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Charge">
+    <xs:annotation>
+      <xs:documentation>Charges contain non-commodity related charges on a customer bill.  These could be items like taxes, levies, surcharges, rebates, or others.  This is meant to allow the HAN device to retrieve enough information to be able to reconstruct and estimate of what the total bill would look like.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="MeterReading">
+        <xs:sequence>
+          <xs:element name="kind" minOccurs="0" maxOccurs="1" type="ChargeKind" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ChargeKind">
+    <xs:annotation>
+      <xs:documentation>Kind of charge.
+0 - Consumption Charge
+1 - Rebate 
+2 - Auxiliary Charge
+3 - Demand Charge
+4 - Tax Charge</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="CustomerAccount">
+    <xs:annotation>
+      <xs:documentation>Assignment of a group of products and services purchased by the Customer through a CustomerAgreement, used as a mechanism for customer billing and payment. It contains common information from the various types of CustomerAgreements to create billings (invoices) for a Customer and receive payment.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Document">
+        <xs:sequence>
+          <xs:element name="ActiveBillingPeriodListLink" type="ActiveBillingPeriodListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="ActiveProjectionReadingListLink" type="ActiveProjectionReadingListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="ActiveTargetReadingListLink" type="ActiveTargetReadingListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="BillingPeriodListLink" type="BillingPeriodListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="ChargeListLink" type="ChargeListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="currency" minOccurs="0" maxOccurs="1" type="UInt16">
+            <xs:annotation>
+              <xs:documentation>The ISO 4217 code indicating the currency applicable to the bill amounts in the summary. See list at http://www.unece.org/cefact/recommendations/rec09/rec09_ecetrd203.pdf</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="HistoricalReadingListLink" type="HistoricalReadingListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="ProjectionReadingListLink" type="ProjectionReadingListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="TargetReadingListLink" type="TargetReadingListLink" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ProjectionReading">
+    <xs:annotation>
+      <xs:documentation>Contains values that forecast a future reading for the time or interval specified.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="MeterReading" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TargetReading">
+    <xs:annotation>
+      <xs:documentation>Contains readings that specify a target or goal, such as a consumption target, to which billing incentives or other contractual ramifications may be associated.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="MeterReading" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="HistoricalReading">
+    <xs:annotation>
+      <xs:documentation>To be used to present readings that have been processed and possibly corrected (as allowed, due to missing or incorrect data) by backend systems. This includes quality codes X.0.1 (valid, verified at backend), X.8.0 (estimated) and X.11.0 / X.11.1 (derived / corrected).</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="MeterReading" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DrResponse">
+    <xs:annotation>
+      <xs:documentation>A response to a Demand Response Load Control (EndDeviceControl) message.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Response">
+        <xs:sequence>
+          <xs:element name="DutyCycle" type="DutyCycle" minOccurs="0" maxOccurs="1" />
+          <xs:element name="Offset" type="Offset" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="overrideDuration" minOccurs="1" maxOccurs="1" type="UInt16">
+            <xs:annotation>
+              <xs:documentation>Indicates the amount of time, in seconds, that the client plans to override during the demand response event.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="SetPoint" type="SetPoint" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PrepayResponse">
+    <xs:annotation>
+      <xs:documentation>A response related to prepayment</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Response">
+        <xs:sequence>
+          <xs:element name="creditTypeApplied" minOccurs="1" maxOccurs="1" type="CreditTypeType">
+            <xs:annotation>
+              <xs:documentation>The credit type that is now in use</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="serviceStatusApplied" minOccurs="1" maxOccurs="1" type="ServiceStatusType">
+            <xs:annotation>
+              <xs:documentation>The service status that is now in use</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PriceResponse">
+    <xs:annotation>
+      <xs:documentation>A response related to a price message.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Response" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Response">
+    <xs:annotation>
+      <xs:documentation>Confirmation such as a confirmation of a notification message. For this type of Document, the class (tag) name of the original resource publication being responded to should be specified as the category.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Document">
+        <xs:sequence>
+          <xs:element name="EndDeviceLink" type="EndDeviceLink" minOccurs="1" maxOccurs="1" />
+          <xs:element name="ServiceSupplierLink" type="ServiceSupplierLink" minOccurs="1" maxOccurs="1" />
+          <xs:element name="Signature" type="Signature" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Signature">
+    <xs:annotation>
+      <xs:documentation>A digital signature, produced by encrypting the Response message using a private key.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="algorithm" minOccurs="1" maxOccurs="1" type="SignatureAlgorithmType">
+        <xs:annotation>
+          <xs:documentation>The algorithm used to create the signature.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" minOccurs="1" maxOccurs="1" type="String42">
+        <xs:annotation>
+          <xs:documentation>The signature value.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SignatureAlgorithmType">
+    <xs:annotation>
+      <xs:documentation>The algorithm used to produce the signature.
+0 - Reserved
+1 - ECDSA</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="TextResponse">
+    <xs:annotation>
+      <xs:documentation>A response to a text message</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Response" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="IdentifiedObject">
+    <xs:annotation>
+      <xs:documentation>This is a root class to provide common naming attributes for all classes needing naming attributes</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Resource">
+        <xs:sequence>
+          <xs:element name="mRID" minOccurs="0" maxOccurs="1" type="HexBinary128">
+            <xs:annotation>
+              <xs:documentation>A Model Authority issues mRIDs. Given that each Model Authority has a unique id and this id is part of the mRID, then the mRID is globally unique. For SEP 2.0, the IANA PEN provider ID shall be specified in the first 32 bits, and objects created by that provider shall be assigned unique IDs with the remaining 96 bits.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="description" minOccurs="0" maxOccurs="1" type="String32">
+            <xs:annotation>
+              <xs:documentation>The description is a human readable text describing or naming the object.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Link">
+    <xs:annotation>
+      <xs:documentation>Links provide a reference, via URI, to another resource.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="href" use="required" type="xs:anyURI" />
+  </xs:complexType>
+  <xs:complexType name="List">
+    <xs:annotation>
+      <xs:documentation>Container to hold a collection of object instances or references.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Resource">
+        <xs:attribute name="all" use="optional" type="UInt16" />
+        <xs:attribute name="results" use="optional" type="UInt8" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ListLink">
+    <xs:annotation>
+      <xs:documentation>Links provide a reference, via URI, to another resource.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="all" use="required" type="UInt16" />
+    <xs:attribute name="href" use="required" type="xs:anyURI" />
+  </xs:complexType>
+  <xs:complexType name="Resource">
+    <xs:annotation>
+      <xs:documentation>A resource is an addressable unit of information, either a collection (List) or instance of an object (identifiedObject, or simply, Resource)</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="href" use="optional" type="xs:anyURI" />
+    <xs:attribute name="replyTo" use="optional" type="xs:anyURI" />
+    <xs:attribute name="responseRequired" use="optional" type="HexBinary8" />
+    <xs:attribute name="signatureRequired" use="optional" type="xs:boolean" />
+    <xs:attribute name="subscribable" use="optional" type="xs:boolean" />
+  </xs:complexType>
+  <xs:complexType name="DeviceStatus">
+    <xs:annotation>
+      <xs:documentation>Status of device</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Resource">
+        <xs:sequence>
+          <xs:element name="changedTime" minOccurs="1" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>The time at which the reported values were recorded.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="onCount" minOccurs="0" maxOccurs="1" type="UInt16">
+            <xs:annotation>
+              <xs:documentation>The number of times that the device has been turned on: Count of "device on" times, since the last time the counter was reset</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="opState" minOccurs="0" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>Device operational state: 
+0 - Not applicable / Unknown
+1 - Not operating
+2 - Operating
+3 - Starting up
+4 - Shutting down
+5 - At disconnect level
+6 - kW ramping
+7 - kVar ramping</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="opTime" minOccurs="0" maxOccurs="1" type="UInt32">
+            <xs:annotation>
+              <xs:documentation>Total time device has operated: re-settable: Accumulated time in seconds since the last time the counter was reset.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Temperature" type="Temperature" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="TimeLink" type="TimeLink" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Document">
+    <xs:annotation>
+      <xs:documentation>Parent class for different groupings of information collected and managed as a part of a business process. It will frequently contain references to other objects, such as assets, people and power system resources.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="category" minOccurs="0" maxOccurs="1" type="String32">
+            <xs:annotation>
+              <xs:documentation>Utility-specific categorisation of this document, according to their corporate standards, practices, and existing IT systems (e.g., for management of assets, maintenance, work, outage, customers, etc.).</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="createdDateTime" minOccurs="0" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>Date and time that this document was created.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="status" minOccurs="0" maxOccurs="1" type="StatusType">
+            <xs:annotation>
+              <xs:documentation>Status of subject (e.g., EndDeviceControl) this document represents.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="subject" minOccurs="0" maxOccurs="1" type="HexBinary64">
+            <xs:annotation>
+              <xs:documentation>Document subject.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ServiceCategory">
+    <xs:annotation>
+      <xs:documentation>Category of service provided to the customer.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="kind" minOccurs="1" maxOccurs="1" type="ServiceKind">
+        <xs:annotation>
+          <xs:documentation>Service kind</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ServiceSupplier">
+    <xs:annotation>
+      <xs:documentation>Organisation that provides services to Customers.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="email" minOccurs="0" maxOccurs="1" type="String32">
+            <xs:annotation>
+              <xs:documentation>Website URI address for this service supplier.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="phone" minOccurs="0" maxOccurs="1" type="String20">
+            <xs:annotation>
+              <xs:documentation>Human-readable phone number for this service supplier.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="providerID" minOccurs="0" maxOccurs="1" type="UInt32">
+            <xs:annotation>
+              <xs:documentation>Contains a unique ID for the commodity provider, to be used as prefix (first 32 bits) in global mRID object identifiers created by this ServiceSupplier.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="web" minOccurs="0" maxOccurs="1" type="String42">
+            <xs:annotation>
+              <xs:documentation>Website URI address for this service supplier.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="UsagePoint">
+    <xs:annotation>
+      <xs:documentation>Logical point on a network at which consumption or production is either physically measured (e.g. metered) or estimated (e.g. unmetered street lights).</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="UsagePointBase">
+        <xs:sequence>
+          <xs:element name="CustomerAccountLink" type="CustomerAccountLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="LoadShedAvailabilityListLink" type="LoadShedAvailabilityListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="MeterReadingListLink" type="MeterReadingListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="PrepaymentLink" type="PrepaymentLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="ServiceCategory" type="ServiceCategory" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="EndDevice">
+    <xs:annotation>
+      <xs:documentation>Asset container that performs one or more end device functions. Contains information about individual devices in the network. One type of end device is a meter which can perform metering, load management, connect/disconnect, accounting functions, etc. Some end devices, such as ones monitoring and controlling air conditioner, refrigerator, pool pumps may be connected to a meter. All end devices may have communication capability defined by the associated communication function(s). An end device may be owned by a consumer, a service provider, utility or otherwise.
+There may be a related end device function that identifies a sensor or control point within a metering application or communications systems (e.g., water, gas, electricity).
+Some devices may use an optical port that conforms to the ANSI C12.18 standard for communications.”</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="category" minOccurs="0" maxOccurs="1" type="EndDeviceCategoryType">
+            <xs:annotation>
+              <xs:documentation>Bitmap value representing a list of EndDevice categories (types).</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="DeviceStatusLink" type="DeviceStatusLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="EndDeviceGroupListLink" type="EndDeviceGroupListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="FileListLink" type="FileListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="LoadShedAvailabilityListLink" type="LoadShedAvailabilityListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="RegistrationLink" type="RegistrationLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="SubscriptionListLink" type="SubscriptionListLink" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="EndDeviceGroup">
+    <xs:annotation>
+      <xs:documentation>Groups multiple EndDevices into one addressable collection.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="ActiveBillingPeriodListLink" type="ActiveBillingPeriodListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="BillingPeriodListLink" type="BillingPeriodListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="DemandResponseProgramListLink" type="DemandResponseProgramListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="DERListLink" type="DERListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="DERProgramListLink" type="DERProgramListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="MessagingProgramListLink" type="MessagingProgramListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="PrepaymentListLink" type="PrepaymentListLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="TariffProfileLink" type="TariffProfileLink" minOccurs="0" maxOccurs="1" />
+          <xs:element name="UsagePointListLink" type="UsagePointListLink" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Status">
+    <xs:annotation>
+      <xs:documentation>Current status information relevant to a specific object.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="dateTime" minOccurs="1" maxOccurs="1" type="TimeType">
+        <xs:annotation>
+          <xs:documentation>The dateTime attribute will provide a UTC timestamp of when the current status was defined.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="potentiallySuperseded" minOccurs="1" maxOccurs="1" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>Set to true by a server of this event if there are events that overlap this event in time and also overlap in DeviceCategory on the same function set instance.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="potentiallySupersededTime" minOccurs="1" maxOccurs="1" type="TimeType">
+        <xs:annotation>
+          <xs:documentation>Indicates the time that the potentiallySuperseded flag was set.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="reason" minOccurs="0" maxOccurs="1" type="String192">
+        <xs:annotation>
+          <xs:documentation>The Reason attribute allows a Service provider to provide a textual explanation of the status.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="type" minOccurs="1" maxOccurs="1" type="UInt8">
+        <xs:annotation>
+          <xs:documentation>Field representing the current status type. 
+
+0 = Scheduled
+1 = Active
+2 = Cancelled 
+3 = Cancelled with Randomization 
+4 = Superseded</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Temperature">
+    <xs:annotation>
+      <xs:documentation>Specification of the temperature of a device surface or area.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="multiplier" minOccurs="1" maxOccurs="1" type="PowerOfTenMultiplierType">
+        <xs:annotation>
+          <xs:documentation>Multiplier for 'unit'.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="subject" minOccurs="1" maxOccurs="1" type="UInt8">
+        <xs:annotation>
+          <xs:documentation>The subject of the temperature measurement
+0 - Enclosure
+1 - Transformer
+2 - HeatSink</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="unit" minOccurs="0" maxOccurs="1" type="UomType">
+        <xs:annotation>
+          <xs:documentation>Unit in symbol</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" minOccurs="1" maxOccurs="1" type="UInt16">
+        <xs:annotation>
+          <xs:documentation>Value in units specified</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Activation">
+    <xs:annotation>
+      <xs:documentation>Contains identification and other information about the device.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="activateTime" minOccurs="1" maxOccurs="1" type="TimeType">
+        <xs:annotation>
+          <xs:documentation>Date/time to activate the indicated file software</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="currentTime" minOccurs="1" maxOccurs="1" type="TimeType">
+        <xs:annotation>
+          <xs:documentation>Current date/time</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="File">
+    <xs:annotation>
+      <xs:documentation>Contains identification and other information about the device.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="fileURI" minOccurs="1" maxOccurs="1" type="xs:anyURI">
+        <xs:annotation>
+          <xs:documentation>The URI location of the file.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Size" minOccurs="1" maxOccurs="1" type="UInt32">
+        <xs:annotation>
+          <xs:documentation>Indicates the size (in bytes) of the file.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Type" minOccurs="1" maxOccurs="1" type="HexBinary16">
+        <xs:annotation>
+          <xs:documentation>0000&amp;ndash;FFBE = Manufacturer Specific
+FFBF = Software Image
+FFC0 = Security credential
+FFC1 = Configuration
+FFC2 = Log
+FFC3&amp;ndash;FFFE = Reserved (unassigned)
+FFFF = Reserved: wild card</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="FileStatus">
+    <xs:annotation>
+      <xs:documentation>Contains identification and other information about the device.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="deviceID" minOccurs="1" maxOccurs="1" type="HexBinary128">
+        <xs:annotation>
+          <xs:documentation>Contains the ID of the loading device</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="fileURI" minOccurs="1" maxOccurs="1" type="xs:anyURI">
+        <xs:annotation>
+          <xs:documentation>The URI location of the file.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="status" minOccurs="1" maxOccurs="1" type="StatusType">
+        <xs:annotation>
+          <xs:documentation>Contains the status of the indicated file</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CreditRegisterList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold CreditRegister objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="CreditRegister" type="CreditRegister" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DemandResponseProgramList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold DemandResponseProgram objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="DemandResponseProgram" type="DemandResponseProgram" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="EndDeviceControlList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold EndDeviceControl objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="EndDeviceControl" type="EndDeviceControl" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="EndDeviceGroupList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold EndDeviceGroup objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="EndDeviceGroup" type="EndDeviceGroup" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="EndDeviceList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold EndDevice objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="EndDevice" type="EndDevice" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="FileList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold File objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="File" type="File" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="IntervalBlockList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold IntervalBlockList objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="IntervalBlock" type="IntervalBlock" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="LoadShedAvailabilityList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold LoadShedAvailability objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="LoadShedAvailability" type="LoadShedAvailability" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MeterReadingList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold MeterReading objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="MeterReading" type="MeterReading" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="NotificationList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold Notification objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="Notification" type="Notification" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PrepaymentList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold Prepayment objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="Prepayment" type="Prepayment" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RateComponentList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold RateComponent objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="RateComponent" type="RateComponent" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ReadingTypeList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold ReadingType objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="ReadingType" type="ReadingType" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ResponseList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold Response objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="Response" type="Response" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ServiceSupplierList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold ServiceSupplier objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="ServiceSupplier" type="ServiceSupplier" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SubscriptionList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold Subscription objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="Subscription" type="Subscription" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TariffProfileList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold TariffProfile objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="TariffProfile" type="TariffProfile" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TextMessageList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold TextMessage objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="TextMessage" type="TextMessage" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TimeTariffIntervalList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold TimeTariffInterval objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="TimeTariffInterval" type="TimeTariffInterval" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="UsagePointList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold UsagePoint objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="UsagePoint" type="UsagePoint" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MirrorUsagePointList">
+    <xs:annotation>
+      <xs:documentation>A List of MirrorUsagePoint instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="MirrorUsagePoint" type="MirrorUsagePoint" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ReadingList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold Reading objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="Reading" type="Reading" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="BillingPeriodList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold BillingPeriod objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="BillingPeriod" type="BillingPeriod" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ChargeList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold Charge objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="Charge" type="Charge" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DERControlList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold DERControl objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="DERControl" type="DERControl" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DERProgramList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold DERProgram objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="DERProgram" type="DERProgram" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MessagingProgramList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold MessagingProgram objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="MessagingProgram" type="MessagingProgram" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ProjectionReadingList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold ProjectionReading objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="ProjectionReading" type="ProjectionReading" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TargetReadingList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold TargetReading objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="TargetReading" type="TargetReading" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ChargeReservationList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold ChargeReservation objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="ChargeReservation" type="ChargeReservation" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="HistoricalReadingList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold HistoricalReading objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="HistoricalReading" type="HistoricalReading" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="LogEventList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold LogEvent objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="LogEvent" type="LogEvent" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SupplyInterruptionOverrideList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold SupplyInterruptionOverride objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="SupplyInterruptionOverride" type="SupplyInterruptionOverride" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SupportedLocaleList">
+    <xs:annotation>
+      <xs:documentation>A List element to hold SupportedLocale objects.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="List">
+        <xs:sequence>
+          <xs:element name="SupportedLocale" type="SupportedLocale" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="AccountBalanceLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of AccountBalance.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ActiveBillingPeriodListLink">
+    <xs:annotation>
+      <xs:documentation>Contains the object instances from the list where the current time is within the interval of the object.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ActiveChargeReservationListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of active ChargeReservation instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ActiveCreditRegisterListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of active CreditRegister instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ActiveDERControlListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of active DERControl instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ActiveEndDeviceControlListLink">
+    <xs:annotation>
+      <xs:documentation>Contains the object instances from the list where the current time is within the interval of the object.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ActiveProjectionReadingListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of active ProjectionReading instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ActiveSupplyInterruptionOverrideListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of active SupplyInterruptionOverride instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ActiveTargetReadingListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of active TargetReading instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ActiveTextMessageListLink">
+    <xs:annotation>
+      <xs:documentation>Contains the object instances from the list where the current time is within the interval of the object.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ActiveTimeTariffIntervalListLink">
+    <xs:annotation>
+      <xs:documentation>Contains the object instances from the list where the current time is within the interval of the object.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="BillingPeriodListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of BillingPeriod instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ChargeListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of Charge instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ChargeReservationListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of ChargeReservation instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ChargerLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of Charger.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ChargerListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of Charger instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ConfigurationLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of Configuration.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CreditRegisterListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of CreditRegister instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CustomerAccountLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of CustomerAccount.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DemandResponseProgramLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of DemandResponseProgram.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DemandResponseProgramListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of DemandResponseProgram instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DERControlListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of DERControl instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DERLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of DER.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DERListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of DER instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DERProgramListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of DERProgram instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DERStatusLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of DERStatus.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DeviceCapabilityLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of DeviceCapability.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DeviceInformationLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of DeviceInformation.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DeviceStatusLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of DeviceStatus.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="EndDeviceControlListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of EndDeviceControl instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="EndDeviceGroupListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of EndDeviceGroup instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="EndDeviceLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of EndDevice.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="EndDeviceListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of EndDevice instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="FileListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of File instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="HistoricalReadingListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of HistoricalReading instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="IntervalBlockListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of IntervalBlock instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="LoadShedAvailabilityListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of LoadShedAvailability instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="LogEventListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of LogEvent instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MessagingProgramListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of MessagingProgram instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MeterReadingLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of MeterReading.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MeterReadingListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of MeterReading instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MirrorUsagePointListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of UsagePoint instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="NotificationListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of Notification instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PowerStatusLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of PowerStatus.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PrepaymentLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of Prepayment.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PrepaymentListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of Prepayment instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PrepayOperationStatusLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of PrepayOperationStatus.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ProjectionReadingListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of ProjectionReading instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RateComponentListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of RateComponent instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ReadingTypeLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of ReadingType.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ReadingTypeListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of ReadingType instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RegistrationLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of Registration.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RegistrationListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of Registration instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ResponseListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of Response instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ServiceSupplierLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of ServiceSupplier.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SubscriptionListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of Subscription instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SupplyInterruptionOverrideListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of SupplyInterruptionOverride instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SupportedLocaleListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of SupportedLocale instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TargetReadingListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of TargetReading instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TariffProfileLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of TariffProfile.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TariffProfileListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of TariffProfile instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TextMessageListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of TextMessage instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TimeLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of Time.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TimeTariffIntervalListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of TimeTariffInterval instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="UsagePointLink">
+    <xs:annotation>
+      <xs:documentation>A Link to an instance of UsagePoint.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="UsagePointListLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a List of UsagePoint instances.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ListLink" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ReadingLink">
+    <xs:annotation>
+      <xs:documentation>A Link to a Reading.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Link" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="StatusType">
+    <xs:annotation>
+      <xs:documentation>The status type values 
+
+0 - Reserved 
+1 - Message Received 
+2 - Event Started 
+3 - Event Completed 
+4 - User has chosen to “Opt-Out”, user will not participate in this event
+5 - User has chosen to “Opt-In”, user will participate in this event
+6 - The event has been cancelled
+7 - The event has been superseded
+8 - Event partially completed with User “Opt-Out”.
+9 - Event partially completed due to User “Opt-In”
+10 - Event completed, no User participation (Previous “Opt-Out”)
+11 - User has acknowledged the message.
+12-247 - Reserved
+
+248 - Rejected - Invalid Cancel Command (Default)
+249 - Rejected - Invalid Cancel Command (Invalid Effective Time)
+250 - Reserved
+251 - Rejected - Event was received after it had expired (Current Time &amp;gt; Start Time 0 - +Duration)
+252 - Reserved
+253 - Rejected - Invalid Cancel Command (Undefined Event)
+254 - Load Control Event command Rejected
+255 - Reserved</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="DateTimeInterval">
+    <xs:annotation>
+      <xs:documentation>Interval of date and time.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="duration" minOccurs="1" maxOccurs="1" type="UInt32">
+        <xs:annotation>
+          <xs:documentation>Duration of the interval, in seconds.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="start" minOccurs="1" maxOccurs="1" type="TimeType">
+        <xs:annotation>
+          <xs:documentation>Date and time of the start of the interval.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LocaleType">
+    <xs:annotation>
+      <xs:documentation>RFC 4646 identifier of a language-region</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="String42" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="EndDeviceCategoryType">
+    <xs:annotation>
+      <xs:documentation>The EndDevice category types defined.
+Bit positions SHALL be defined as follows:
+0 - Programmable Communicating Thermostat 
+1 - Strip Heaters 
+2 - Baseboard Heaters 
+3 - Water Heater 
+4 - Pool Pump 
+5 - Spa 
+6 - Jacuzzi 
+7 - Smart Appliance 
+8 - Irrigation Pump 
+9 - Managed Commercial and Industrial (C&amp;amp;I) Loads 
+10 - Simple misc. (Residential On/Off) loads 
+11 - Exterior Lighting 
+12 - Interior Lighting 
+13 - Electric Vehicle 
+14 - Generation Systems 
+15 - Load Control Switch 
+16 - Smart Inverter 
+17 - EVSE 
+18 - RESU 
+19 - Energy Management System 
+20 - Smart Energy Module
+21-30 - Reserved
+31 - Other</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="HexBinary32" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="PerCent">
+    <xs:annotation>
+      <xs:documentation>Normally 0 - 100 on a defined base</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="PrimacyType">
+    <xs:annotation>
+      <xs:documentation>Values possible for indication of "Primary" provider: 
+0 - Contracted premise service provider
+1 - Convenience functionality service provider
+2 - Other convenience functionality service provider
+3 - Other</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="PhaseCode">
+    <xs:annotation>
+      <xs:documentation>0 = Not Applicable
+129 = Phase AN
+128 = Phase A
+132 = Phase AB
+64 = Phase BN
+64 = Phase B
+32 = Phase CN
+32 = Phase C
+224 = Phase ABC
+66 = Phase BC
+40 = Phase CA</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="CurrencyCode">
+    <xs:annotation>
+      <xs:documentation>Follows codes defined in ISO 4217. Full list at http://www.currency-iso.org/
+iso_index/iso_tables/iso_tables_a1.htm.
+
+0 - Not Applicable
+36 - Australian Dollar
+124 - Canadian Dollar
+840 - US Dollar
+978 - Euro</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt16" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="RandomizedDateTimeInterval">
+    <xs:complexContent>
+      <xs:extension base="DateTimeInterval">
+        <xs:sequence>
+          <xs:element name="randomizeEnd" minOccurs="0" maxOccurs="1" type="TimeOffsetType">
+            <xs:annotation>
+              <xs:documentation>Number of seconds boundary inside which a random value must be selected to be applied to the associated interval end time, to avoid sudden synchronized demand changes. If related to price level changes, sign may be ignored.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="randomizeStart" minOccurs="0" maxOccurs="1" type="TimeOffsetType">
+            <xs:annotation>
+              <xs:documentation>Number of seconds boundary inside which a random value must be selected to be applied to the associated interval start time, to avoid sudden synchronized demand changes. If related to price level changes, sign may be ignored.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ServiceKind">
+    <xs:annotation>
+      <xs:documentation>Service kind
+0 - electricity
+1 - gas
+2 - water
+4 - pressure
+5 - heat
+6 - cold
+7 - communication
+8 - time</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="DstRuleType">
+    <xs:annotation>
+      <xs:documentation>Bit map encoded rule from which is calculated the start or end time, within the current year, to which daylight savings time offset must be applied. 
+
+The rule encoding:
+Bits  0 - 11: seconds 0 - 3599
+Bits 12 - 16: hours 0 - 23
+Bits 17 - 19: day of the week 0 = not applicable, 1 - 7 (Monday = 1)
+Bits:20 - 24: day of the month 0 = not applicable, 1 - 31
+Bits: 25 - 27: operator  (detailed below)
+Bits: 28 - 31: month 1 - 12
+
+Rule value of 0xFFFFFFFF means rule processing/DST correction is disabled.
+
+The operators:
+
+0: DST starts/ends on the Day of the Month
+1: DST starts/ends on the Day of the Week that is on or after the Day of the Month
+2: DST starts/ends on the first occurrence of the Day of the Week in a month
+3: DST starts/ends on the second occurrence of the Day of the Week in a month
+4: DST starts/ends on the third occurrence of the Day of the Week in a month
+5: DST starts/ends on the forth occurrence of the Day of the Week in a month
+6: DST starts/ends on the fifth occurrence of the Day of the Week in a month
+7: DST starts/ends on the last occurrence of the Day of the Week in a month
+
+An example: DST starts on third Friday in March at 1:45 AM.  The rule...
+Seconds: 2700
+Hours: 1
+Day of Week: 5
+Day of Month: 0
+Operator: 4
+Month: 3</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="HexBinary32" />
+  </xs:simpleType>
+  <xs:simpleType name="TimeType">
+    <xs:annotation>
+      <xs:documentation>Time is a signed 64 bit value representing the number of seconds since 0 hours, 0 minutes, 0 seconds, on the 1st of January, 1970, in UTC, not counting leap seconds.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="Int64" />
+  </xs:simpleType>
+  <xs:simpleType name="TimeOffsetType">
+    <xs:annotation>
+      <xs:documentation>A signed time offset, typically applied to a Time value, expressed in seconds.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="Int32" />
+  </xs:simpleType>
+  <xs:complexType name="AccumulationBehaviourType">
+    <xs:annotation>
+      <xs:documentation>0 = Not Applicable
+1 = BulkQuantity
+3 = Cumulative
+4 = DeltaData
+6 = Indicating
+9 = Summation
+12 = Instantaneous</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="DataQualifierType">
+    <xs:annotation>
+      <xs:documentation>0 = Not Applicable
+2 = Average
+8 = Maximum
+9 = Minimum
+12 = Normal</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="UnitType">
+    <xs:annotation>
+      <xs:documentation>The unit types defined for end device control target reductions.
+0 - kWh 
+1 - kW  
+2 - Watts 
+3 - Cubic Meters 
+4 - Cubic Feet 
+5 - US Gallons 
+6 - Imperial Gallons 
+7 - BTUs 
+8 - Liters 
+9 - kPA (gauge) 
+10 - kPA (absolute)  
+11 - Mega Joule 
+12 - Unitless</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="TOUType">
+    <xs:annotation>
+      <xs:documentation>0 = NotApplicable
+1 = TOU A
+2 = TOU B
+3 = TOU C
+4 = TOU D
+5 = TOU E
+6 = TOU F
+7 = TOU G
+8 = TOU H
+9 = TOU I
+10 = TOU J
+11 = TOU K
+12 = TOU L
+13 = TOU M
+14 = TOU N
+15 = TOU O</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="ConsumptionTierType">
+    <xs:annotation>
+      <xs:documentation>0 = Not Applicable
+1 = Block Tier 1
+2 = Block Tier 2
+3 = Block Tier 3
+4 = Block Tier 4
+5 = Block Tier 5
+6 = Block Tier 6
+7 = Block Tier 7
+8 = Block Tier 8
+9 = Block Tier 9
+10 = Block Tier 10
+11 = Block Tier 11
+12 = Block Tier 12
+13 = Block Tier 13
+14 = Block Tier 14
+15 = Block Tier 15
+16 = Block Tier 16</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="FlowDirectionType">
+    <xs:annotation>
+      <xs:documentation>0 = Not Applicable
+1 = Forward
+19 = Reverse</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="CommodityType">
+    <xs:annotation>
+      <xs:documentation>0 = Not Applicable
+1 = Electricity secondary metered value (a premise meter is typically a secondary meter)
+2 = Electricity primary metered value
+4 = Air
+7 = NaturalGas
+8 = Propane
+9 = PotableWater
+10 = Steam
+11 = WasteWater
+12 = HeatingFluid
+13 = CoolingFluid</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="KindType">
+    <xs:annotation>
+      <xs:documentation>0 = Not Applicable
+3 = Currency
+8 = Demand
+12 = Energy
+37 = Power</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="PowerOfTenMultiplierType">
+    <xs:annotation>
+      <xs:documentation>0 = None
+1 = deca=x10
+2 = hecto=x100
+-3 = mili=x10-3
+3 = kilo=x1000
+6 = Mega=x106
+-6 = micro=x10-3
+9 = Giga=x109</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="Int8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="TimeAttributeType">
+    <xs:annotation>
+      <xs:documentation>0 = Not Applicable
+1 = 10-minute
+2 = 15-minute
+4 = 24-hour
+5 = 30-minute
+7 = 60-minute
+11 = Daily
+13 = Monthly
+15 = Present
+16 = Previous
+24 = Weekly
+32 = ForTheSpecifiedPeriod
+79 = Daily30minuteFixedBlock</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="UomType">
+    <xs:annotation>
+      <xs:documentation>0 = Not Applicable
+5 = A (Current)
+29 = Voltage
+31 = J (Energy joule)
+33 = Hz (Frequency)
+38 = Real power (Watts)
+42 = m3 (Cubic Meter)
+61 = VA (Apparent power)
+63 = VAr (Reactive power)
+65 = Cos? (Power factor)
+67 = V² (Volts squared)
+69 = A² (Amp squared)
+71 = VAh (Apparent energy)
+72 = Real energy (Watt-hours)
+73 = VArh (Reactive energy)
+106 = Ah (Ampere-hours / Available Charge)
+119 = ft3 (Cubic Feet)
+122 = ft3/h (Cubic Feet per Hour)
+125 = m3/h (Cubic Meter per Hour)
+128 = US gl (US Gallons)
+129 = US gl/h (US Gallons per Hour)
+130 = IMP gl (Imperial Gallons)
+131 = IMP gl/h (Imperial Gallons per Hour)
+132 = BTU
+133 = BTU/h
+134 = Liter
+137 = L/h (Liters per Hour)
+140 = PA(gauge)
+155 = PA(absolute)
+169 = Therm</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="UInt8" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="HexBinary16">
+    <xs:annotation>
+      <xs:documentation>A 16-bit field encoded as a hex string (4 characters / 2 octets)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:hexBinary">
+      <xs:maxLength value="2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="HexBinary8">
+    <xs:annotation>
+      <xs:documentation>An 8-bit field encoded as a hex string (2 characters / 1 octet)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:hexBinary">
+      <xs:maxLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="HexBinary32">
+    <xs:annotation>
+      <xs:documentation>A 32-bit field encoded as a hex string (8 characters / 4 octets)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:hexBinary">
+      <xs:maxLength value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="HexBinary128">
+    <xs:annotation>
+      <xs:documentation>A 128-bit field encoded as a hex string (32 characters / 16 octets)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:hexBinary">
+      <xs:maxLength value="16" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="HexBinary160">
+    <xs:annotation>
+      <xs:documentation>A 128-bit field encoded as a hex string (32 characters / 16 octets)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:hexBinary">
+      <xs:maxLength value="20" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="HexBinary64">
+    <xs:annotation>
+      <xs:documentation>A 64-bit field encoded as a hex string (16 characters / 8 octets)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:hexBinary">
+      <xs:maxLength value="8" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String192">
+    <xs:annotation>
+      <xs:documentation>Character string of max length 192</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="192" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String42">
+    <xs:annotation>
+      <xs:documentation>Character string of max length42</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="42" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String32">
+    <xs:annotation>
+      <xs:documentation>Character string of max length 32</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="32" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String20">
+    <xs:annotation>
+      <xs:documentation>Character string of max length 20</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="20" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String6">
+    <xs:annotation>
+      <xs:documentation>Character string of max length 6</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="6" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UInt8">
+    <xs:annotation>
+      <xs:documentation>Unsigned integer, max inclusive 255 (2^8-1)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedByte" />
+  </xs:simpleType>
+  <xs:simpleType name="UInt16">
+    <xs:annotation>
+      <xs:documentation>Unsigned integer, max inclusive 65535 (2^16-1)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedShort" />
+  </xs:simpleType>
+  <xs:simpleType name="UInt32">
+    <xs:annotation>
+      <xs:documentation>Unsigned integer, max inclusive 4294967295 (2^32-1)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt" />
+  </xs:simpleType>
+  <xs:simpleType name="UInt40">
+    <xs:annotation>
+      <xs:documentation>Unsigned integer, max inclusive 1099511627775 (2^40-1)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+      <xs:maxInclusive value="281474976710655" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PENType">
+    <xs:annotation>
+      <xs:documentation>IANA Private Enterprise Number</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="UInt32" />
+  </xs:simpleType>
+  <xs:simpleType name="UInt48">
+    <xs:annotation>
+      <xs:documentation>Unsigned integer, max inclusive 281474976710655 (2^48-1)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+      <xs:maxInclusive value="281474976710655" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UInt64">
+    <xs:annotation>
+      <xs:documentation>Unsigned integer, max inclusive 18446744073709551615 (2^64-1)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong" />
+  </xs:simpleType>
+  <xs:simpleType name="Int16">
+    <xs:annotation>
+      <xs:documentation>Signed integer, min -32768 max +32767</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:short" />
+  </xs:simpleType>
+  <xs:simpleType name="Int8">
+    <xs:annotation>
+      <xs:documentation>Signed integer, min -128 max +127</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:byte" />
+  </xs:simpleType>
+  <xs:simpleType name="Int32">
+    <xs:annotation>
+      <xs:documentation>Signed integer, max inclusive 2147483647 (2^31), min inclusive -2147483647 (same as xs:int)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:int" />
+  </xs:simpleType>
+  <xs:simpleType name="Int64">
+    <xs:annotation>
+      <xs:documentation>Signed integer, max inclusive 9223372036854775807 (2^63), min inclusive -9223372036854775808 (same as xs:long)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:long" />
+  </xs:simpleType>
+  <xs:complexType name="UsagePointBase">
+    <xs:annotation>
+      <xs:documentation>Logical point on a network at which consumption or production is either physically measured (e.g. metered) or estimated (e.g. unmetered street lights).</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject">
+        <xs:sequence>
+          <xs:element name="roleFlags" minOccurs="1" maxOccurs="1" type="HexBinary16">
+            <xs:annotation>
+              <xs:documentation>Specifies the roles that this usage point has been assigned.
+Bit 1 - isMirror
+Bit 2 - isPremisesAggregationPoint
+Bit 3 - isPEV
+Bit 4 - isDER
+Bit 5 - isRevenueQuality
+Bit 6 - isDC
+Bit 7-16 - Reserved</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="status" minOccurs="1" maxOccurs="1" type="UInt8">
+            <xs:annotation>
+              <xs:documentation>Specifies the current status of this usage point.
+0 = off
+1 = on</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MirrorMeterReading">
+    <xs:annotation>
+      <xs:documentation>Mimic of MeterReading used for managing mirrors.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="MeterReadingBase">
+        <xs:sequence>
+          <xs:element name="IntervalBlock" type="IntervalBlock" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="lastUpdateTime" minOccurs="0" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>The date and time of the last update.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="nextUpdateTime" minOccurs="0" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>The date and time of the next planned update.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Reading" type="Reading" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="ReadingType" type="ReadingType" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MirrorUsagePoint">
+    <xs:annotation>
+      <xs:documentation>A parallel to UsagePoint to support mirroring</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="UsagePointBase">
+        <xs:sequence>
+          <xs:element name="creationTime" minOccurs="1" maxOccurs="1" type="TimeType">
+            <xs:annotation>
+              <xs:documentation>The date and time of the creation of this mirror usage point.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="manufacturerID" minOccurs="1" maxOccurs="1" type="HexBinary32">
+            <xs:annotation>
+              <xs:documentation>Manufacturer identifier</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="MirrorMeterReading" type="MirrorMeterReading" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="serialNumber" minOccurs="1" maxOccurs="1" type="String20" />
+          <xs:element name="ServiceCategory" type="ServiceCategory" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MeterReadingBase">
+    <xs:annotation>
+      <xs:documentation>Set of values obtained from the meter.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="IdentifiedObject" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DeviceCapability" type="DeviceCapability" />
+  <xs:element name="Time" type="Time" />
+  <xs:element name="LogEvent" type="LogEvent" />
+  <xs:element name="NetworkStatusLink" type="NetworkStatusLink" />
+  <xs:element name="PowerConfiguration" type="PowerConfiguration" />
+  <xs:element name="PowerSourceType" type="PowerSourceType" />
+  <xs:element name="PowerStatus" type="PowerStatus" />
+  <xs:element name="Registration" type="Registration" />
+  <xs:element name="SupportedLocale" type="SupportedLocale" />
+  <xs:element name="Configuration" type="Configuration" />
+  <xs:element name="DeviceInformation" type="DeviceInformation" />
+  <xs:element name="NetworkStatus" type="NetworkStatus" />
+  <xs:element name="TimeConfiguration" type="TimeConfiguration" />
+  <xs:element name="Condition" type="Condition" />
+  <xs:element name="Notification" type="Notification" />
+  <xs:element name="Subscription" type="Subscription" />
+  <xs:element name="MessagingProgram" type="MessagingProgram" />
+  <xs:element name="TextMessage" type="TextMessage" />
+  <xs:element name="PriorityType" type="PriorityType" />
+  <xs:element name="DemandResponseProgram" type="DemandResponseProgram" />
+  <xs:element name="DutyCycle" type="DutyCycle" />
+  <xs:element name="EndDeviceControl" type="EndDeviceControl" />
+  <xs:element name="LoadShedAvailability" type="LoadShedAvailability" />
+  <xs:element name="Offset" type="Offset" />
+  <xs:element name="OffsetType" type="OffsetType" />
+  <xs:element name="SetPoint" type="SetPoint" />
+  <xs:element name="SetpointType" type="SetpointType" />
+  <xs:element name="TargetReduction" type="TargetReduction" />
+  <xs:element name="ConsumptionTariffInterval" type="ConsumptionTariffInterval" />
+  <xs:element name="Cost" type="Cost" />
+  <xs:element name="CostKindType" type="CostKindType" />
+  <xs:element name="RateComponent" type="RateComponent" />
+  <xs:element name="TariffProfile" type="TariffProfile" />
+  <xs:element name="TimeTariffInterval" type="TimeTariffInterval" />
+  <xs:element name="IntervalReading" type="IntervalReading" />
+  <xs:element name="QualityOfReading" type="QualityOfReading" />
+  <xs:element name="MeterReading" type="MeterReading" />
+  <xs:element name="IntervalBlock" type="IntervalBlock" />
+  <xs:element name="Reading" type="Reading" />
+  <xs:element name="ReadingType" type="ReadingType" />
+  <xs:element name="ReadingQuality" type="ReadingQuality" />
+  <xs:element name="ChargeReservation" type="ChargeReservation" />
+  <xs:element name="ChargerStatus" type="ChargerStatus" />
+  <xs:element name="DER" type="DER" />
+  <xs:element name="DERControl" type="DERControl" />
+  <xs:element name="DERStatus" type="DERStatus" />
+  <xs:element name="ReservationStatusType" type="ReservationStatusType" />
+  <xs:element name="ActivePower" type="ActivePower" />
+  <xs:element name="ActivePowerChargeRate" type="ActivePowerChargeRate" />
+  <xs:element name="AmpereHour" type="AmpereHour" />
+  <xs:element name="Charger" type="Charger" />
+  <xs:element name="DERProgram" type="DERProgram" />
+  <xs:element name="PowerFactor" type="PowerFactor" />
+  <xs:element name="Voltage" type="Voltage" />
+  <xs:element name="AccountBalance" type="AccountBalance" />
+  <xs:element name="AccountingUnit" type="AccountingUnit" />
+  <xs:element name="CreditRegister" type="CreditRegister" />
+  <xs:element name="CreditStatusType" type="CreditStatusType" />
+  <xs:element name="CreditTypeChange" type="CreditTypeChange" />
+  <xs:element name="CreditTypeType" type="CreditTypeType" />
+  <xs:element name="Prepayment" type="Prepayment" />
+  <xs:element name="PrepayModeType" type="PrepayModeType" />
+  <xs:element name="PrepayOperationStatus" type="PrepayOperationStatus" />
+  <xs:element name="ServiceChange" type="ServiceChange" />
+  <xs:element name="ServiceStatusType" type="ServiceStatusType" />
+  <xs:element name="SupplyInterruptionOverride" type="SupplyInterruptionOverride" />
+  <xs:element name="RealEnergy" type="RealEnergy" />
+  <xs:element name="BillingPeriod" type="BillingPeriod" />
+  <xs:element name="Charge" type="Charge" />
+  <xs:element name="ChargeKind" type="ChargeKind" />
+  <xs:element name="CustomerAccount" type="CustomerAccount" />
+  <xs:element name="ProjectionReading" type="ProjectionReading" />
+  <xs:element name="TargetReading" type="TargetReading" />
+  <xs:element name="HistoricalReading" type="HistoricalReading" />
+  <xs:element name="DrResponse" type="DrResponse" />
+  <xs:element name="PrepayResponse" type="PrepayResponse" />
+  <xs:element name="PriceResponse" type="PriceResponse" />
+  <xs:element name="Response" type="Response" />
+  <xs:element name="Signature" type="Signature" />
+  <xs:element name="SignatureAlgorithmType" type="SignatureAlgorithmType" />
+  <xs:element name="TextResponse" type="TextResponse" />
+  <xs:element name="IdentifiedObject" type="IdentifiedObject" />
+  <xs:element name="Link" type="Link" />
+  <xs:element name="List" type="List" />
+  <xs:element name="ListLink" type="ListLink" />
+  <xs:element name="Resource" type="Resource" />
+  <xs:element name="DeviceStatus" type="DeviceStatus" />
+  <xs:element name="Document" type="Document" />
+  <xs:element name="ServiceCategory" type="ServiceCategory" />
+  <xs:element name="ServiceSupplier" type="ServiceSupplier" />
+  <xs:element name="UsagePoint" type="UsagePoint" />
+  <xs:element name="EndDevice" type="EndDevice" />
+  <xs:element name="EndDeviceGroup" type="EndDeviceGroup" />
+  <xs:element name="Status" type="Status" />
+  <xs:element name="Temperature" type="Temperature" />
+  <xs:element name="Activation" type="Activation" />
+  <xs:element name="File" type="File" />
+  <xs:element name="FileStatus" type="FileStatus" />
+  <xs:element name="CreditRegisterList" type="CreditRegisterList" />
+  <xs:element name="DemandResponseProgramList" type="DemandResponseProgramList" />
+  <xs:element name="EndDeviceControlList" type="EndDeviceControlList" />
+  <xs:element name="EndDeviceGroupList" type="EndDeviceGroupList" />
+  <xs:element name="EndDeviceList" type="EndDeviceList" />
+  <xs:element name="FileList" type="FileList" />
+  <xs:element name="IntervalBlockList" type="IntervalBlockList" />
+  <xs:element name="LoadShedAvailabilityList" type="LoadShedAvailabilityList" />
+  <xs:element name="MeterReadingList" type="MeterReadingList" />
+  <xs:element name="NotificationList" type="NotificationList" />
+  <xs:element name="PrepaymentList" type="PrepaymentList" />
+  <xs:element name="RateComponentList" type="RateComponentList" />
+  <xs:element name="ReadingTypeList" type="ReadingTypeList" />
+  <xs:element name="ResponseList" type="ResponseList" />
+  <xs:element name="ServiceSupplierList" type="ServiceSupplierList" />
+  <xs:element name="SubscriptionList" type="SubscriptionList" />
+  <xs:element name="TariffProfileList" type="TariffProfileList" />
+  <xs:element name="TextMessageList" type="TextMessageList" />
+  <xs:element name="TimeTariffIntervalList" type="TimeTariffIntervalList" />
+  <xs:element name="UsagePointList" type="UsagePointList" />
+  <xs:element name="MirrorUsagePointList" type="MirrorUsagePointList" />
+  <xs:element name="ReadingList" type="ReadingList" />
+  <xs:element name="BillingPeriodList" type="BillingPeriodList" />
+  <xs:element name="ChargeList" type="ChargeList" />
+  <xs:element name="DERControlList" type="DERControlList" />
+  <xs:element name="DERProgramList" type="DERProgramList" />
+  <xs:element name="MessagingProgramList" type="MessagingProgramList" />
+  <xs:element name="ProjectionReadingList" type="ProjectionReadingList" />
+  <xs:element name="TargetReadingList" type="TargetReadingList" />
+  <xs:element name="ChargeReservationList" type="ChargeReservationList" />
+  <xs:element name="HistoricalReadingList" type="HistoricalReadingList" />
+  <xs:element name="LogEventList" type="LogEventList" />
+  <xs:element name="SupplyInterruptionOverrideList" type="SupplyInterruptionOverrideList" />
+  <xs:element name="SupportedLocaleList" type="SupportedLocaleList" />
+  <xs:element name="AccountBalanceLink" type="AccountBalanceLink" />
+  <xs:element name="ActiveBillingPeriodListLink" type="ActiveBillingPeriodListLink" />
+  <xs:element name="ActiveChargeReservationListLink" type="ActiveChargeReservationListLink" />
+  <xs:element name="ActiveCreditRegisterListLink" type="ActiveCreditRegisterListLink" />
+  <xs:element name="ActiveDERControlListLink" type="ActiveDERControlListLink" />
+  <xs:element name="ActiveEndDeviceControlListLink" type="ActiveEndDeviceControlListLink" />
+  <xs:element name="ActiveProjectionReadingListLink" type="ActiveProjectionReadingListLink" />
+  <xs:element name="ActiveSupplyInterruptionOverrideListLink" type="ActiveSupplyInterruptionOverrideListLink" />
+  <xs:element name="ActiveTargetReadingListLink" type="ActiveTargetReadingListLink" />
+  <xs:element name="ActiveTextMessageListLink" type="ActiveTextMessageListLink" />
+  <xs:element name="ActiveTimeTariffIntervalListLink" type="ActiveTimeTariffIntervalListLink" />
+  <xs:element name="BillingPeriodListLink" type="BillingPeriodListLink" />
+  <xs:element name="ChargeListLink" type="ChargeListLink" />
+  <xs:element name="ChargeReservationListLink" type="ChargeReservationListLink" />
+  <xs:element name="ChargerLink" type="ChargerLink" />
+  <xs:element name="ChargerListLink" type="ChargerListLink" />
+  <xs:element name="ConfigurationLink" type="ConfigurationLink" />
+  <xs:element name="CreditRegisterListLink" type="CreditRegisterListLink" />
+  <xs:element name="CustomerAccountLink" type="CustomerAccountLink" />
+  <xs:element name="DemandResponseProgramLink" type="DemandResponseProgramLink" />
+  <xs:element name="DemandResponseProgramListLink" type="DemandResponseProgramListLink" />
+  <xs:element name="DERControlListLink" type="DERControlListLink" />
+  <xs:element name="DERLink" type="DERLink" />
+  <xs:element name="DERListLink" type="DERListLink" />
+  <xs:element name="DERProgramListLink" type="DERProgramListLink" />
+  <xs:element name="DERStatusLink" type="DERStatusLink" />
+  <xs:element name="DeviceCapabilityLink" type="DeviceCapabilityLink" />
+  <xs:element name="DeviceInformationLink" type="DeviceInformationLink" />
+  <xs:element name="DeviceStatusLink" type="DeviceStatusLink" />
+  <xs:element name="EndDeviceControlListLink" type="EndDeviceControlListLink" />
+  <xs:element name="EndDeviceGroupListLink" type="EndDeviceGroupListLink" />
+  <xs:element name="EndDeviceLink" type="EndDeviceLink" />
+  <xs:element name="EndDeviceListLink" type="EndDeviceListLink" />
+  <xs:element name="FileListLink" type="FileListLink" />
+  <xs:element name="HistoricalReadingListLink" type="HistoricalReadingListLink" />
+  <xs:element name="IntervalBlockListLink" type="IntervalBlockListLink" />
+  <xs:element name="LoadShedAvailabilityListLink" type="LoadShedAvailabilityListLink" />
+  <xs:element name="LogEventListLink" type="LogEventListLink" />
+  <xs:element name="MessagingProgramListLink" type="MessagingProgramListLink" />
+  <xs:element name="MeterReadingLink" type="MeterReadingLink" />
+  <xs:element name="MeterReadingListLink" type="MeterReadingListLink" />
+  <xs:element name="MirrorUsagePointListLink" type="MirrorUsagePointListLink" />
+  <xs:element name="NotificationListLink" type="NotificationListLink" />
+  <xs:element name="PowerStatusLink" type="PowerStatusLink" />
+  <xs:element name="PrepaymentLink" type="PrepaymentLink" />
+  <xs:element name="PrepaymentListLink" type="PrepaymentListLink" />
+  <xs:element name="PrepayOperationStatusLink" type="PrepayOperationStatusLink" />
+  <xs:element name="ProjectionReadingListLink" type="ProjectionReadingListLink" />
+  <xs:element name="RateComponentListLink" type="RateComponentListLink" />
+  <xs:element name="ReadingTypeLink" type="ReadingTypeLink" />
+  <xs:element name="ReadingTypeListLink" type="ReadingTypeListLink" />
+  <xs:element name="RegistrationLink" type="RegistrationLink" />
+  <xs:element name="RegistrationListLink" type="RegistrationListLink" />
+  <xs:element name="ResponseListLink" type="ResponseListLink" />
+  <xs:element name="ServiceSupplierLink" type="ServiceSupplierLink" />
+  <xs:element name="SubscriptionListLink" type="SubscriptionListLink" />
+  <xs:element name="SupplyInterruptionOverrideListLink" type="SupplyInterruptionOverrideListLink" />
+  <xs:element name="SupportedLocaleListLink" type="SupportedLocaleListLink" />
+  <xs:element name="TargetReadingListLink" type="TargetReadingListLink" />
+  <xs:element name="TariffProfileLink" type="TariffProfileLink" />
+  <xs:element name="TariffProfileListLink" type="TariffProfileListLink" />
+  <xs:element name="TextMessageListLink" type="TextMessageListLink" />
+  <xs:element name="TimeLink" type="TimeLink" />
+  <xs:element name="TimeTariffIntervalListLink" type="TimeTariffIntervalListLink" />
+  <xs:element name="UsagePointLink" type="UsagePointLink" />
+  <xs:element name="UsagePointListLink" type="UsagePointListLink" />
+  <xs:element name="ReadingLink" type="ReadingLink" />
+  <xs:element name="StatusType" type="StatusType" />
+  <xs:element name="DateTimeInterval" type="DateTimeInterval" />
+  <xs:element name="LocaleType" type="LocaleType" />
+  <xs:element name="EndDeviceCategoryType" type="EndDeviceCategoryType" />
+  <xs:element name="PerCent" type="PerCent" />
+  <xs:element name="PrimacyType" type="PrimacyType" />
+  <xs:element name="PhaseCode" type="PhaseCode" />
+  <xs:element name="CurrencyCode" type="CurrencyCode" />
+  <xs:element name="RandomizedDateTimeInterval" type="RandomizedDateTimeInterval" />
+  <xs:element name="ServiceKind" type="ServiceKind" />
+  <xs:element name="AccumulationBehaviourType" type="AccumulationBehaviourType" />
+  <xs:element name="DataQualifierType" type="DataQualifierType" />
+  <xs:element name="UnitType" type="UnitType" />
+  <xs:element name="TOUType" type="TOUType" />
+  <xs:element name="ConsumptionTierType" type="ConsumptionTierType" />
+  <xs:element name="FlowDirectionType" type="FlowDirectionType" />
+  <xs:element name="CommodityType" type="CommodityType" />
+  <xs:element name="KindType" type="KindType" />
+  <xs:element name="PowerOfTenMultiplierType" type="PowerOfTenMultiplierType" />
+  <xs:element name="TimeAttributeType" type="TimeAttributeType" />
+  <xs:element name="UomType" type="UomType" />
+  <xs:element name="UsagePointBase" type="UsagePointBase" />
+  <xs:element name="MirrorMeterReading" type="MirrorMeterReading" />
+  <xs:element name="MirrorUsagePoint" type="MirrorUsagePoint" />
+  <xs:element name="MeterReadingBase" type="MeterReadingBase" />
+</xs:schema>

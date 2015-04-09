@@ -1,0 +1,41 @@
+#ISD afv6
+# ISD version: 3.0.598
+
+# Application configuration
+appId: afv6
+generationDirectory: PATH(ISC_RELATIVE):gen
+deviceName: full-exi-test
+
+# Devices
+
+# Plugin configuration
+appPlugin: exi
+appPlugin: debug-print
+
+# Setup configurations
+{setupId:xsdObjects
+default.
+ember
+useAllTypes=true
+}
+{setupId:commandLineConfiguration
+}
+{setupId:eventConfiguration
+}
+{setupId:debugConfiguration
+on
+area name off
+appSerial=1
+}
+{setupId:callbackConfiguration
+}
+{setupId:uriMapper
+}
+{setupId:macros
+}
+{setupId:halOptions
+}
+{setupId:additionalFiles
+}
+
+# Plugin options
