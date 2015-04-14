@@ -311,6 +311,7 @@ void at_cmd_parser(void)
 }
 #endif
 
+// Initialization of everything
 void all_init(void)
 {
   
