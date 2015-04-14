@@ -90,6 +90,7 @@ void uart_2_rm (void)
     }
 }
 #elif EXAMPLE_CODE==AT_PARSER
+//parser example
 void at_cmd_parser(void)
 {
     int watch_c;
