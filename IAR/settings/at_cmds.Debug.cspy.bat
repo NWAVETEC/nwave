@@ -25,7 +25,7 @@ if not "%1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files\IAR Systems\Embedded Workbench 7.2\common\bin\cspybat" -f "C:\eraseme\protocol_e\nwave\IAR\settings\at_cmds.Debug.general.xcl" --backend -f "C:\eraseme\protocol_e\nwave\IAR\settings\at_cmds.Debug.driver.xcl" 
+"C:\Program Files\IAR Systems\Embedded Workbench 7.2\common\bin\cspybat" -f "C:\Users\ruslan\gitrepo\training\nwave\IAR\settings\at_cmds.Debug.general.xcl" --backend -f "C:\Users\ruslan\gitrepo\training\nwave\IAR\settings\at_cmds.Debug.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files\IAR Systems\Embedded Workbench 7.2\common\bin\cspybat" -f "C:\eraseme\protocol_e\nwave\IAR\settings\at_cmds.Debug.general.xcl" "--debug_file=%1" --backend -f "C:\eraseme\protocol_e\nwave\IAR\settings\at_cmds.Debug.driver.xcl" 
+"C:\Program Files\IAR Systems\Embedded Workbench 7.2\common\bin\cspybat" -f "C:\Users\ruslan\gitrepo\training\nwave\IAR\settings\at_cmds.Debug.general.xcl" "--debug_file=%1" --backend -f "C:\Users\ruslan\gitrepo\training\nwave\IAR\settings\at_cmds.Debug.driver.xcl" 
 
 @echo off 
 :end

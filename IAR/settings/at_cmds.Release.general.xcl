@@ -2,7 +2,7 @@
 
 "C:\Program Files\IAR Systems\Embedded Workbench 7.2\arm\bin\armjlink.dll" 
 
-"C:\eraseme\protocol_e\nwave\IAR\Release\Exe\nwave_dev_kit.out" 
+"C:\Users\ruslan\gitrepo\training\nwave\IAR\Release\Exe\nwave_dev_kit.out" 
 
 --plugin "C:\Program Files\IAR Systems\Embedded Workbench 7.2\arm\bin\armbat.dll" 
 
