@@ -588,7 +588,7 @@
         <option>
           <name>OOCOutputFormat</name>
           <version>2</version>
-          <state>0</state>
+          <state>2</state>
         </option>
         <option>
           <name>OCOutputOverride</name>
@@ -596,7 +596,7 @@
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>at_cmds.srec</state>
+          <state>at_cmds.bin</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
@@ -604,7 +604,7 @@
         </option>
         <option>
           <name>OOCObjCopyEnable</name>
-          <state>0</state>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -711,11 +711,11 @@
         </option>
         <option>
           <name>IlinkIcfOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>$TOOLKIT_DIR$\config\linker\SiliconLaboratories\EFM32G210F128.icf</state>
+          <state>$PROJ_DIR$\at_cmds_app.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>

@@ -21,7 +21,6 @@
 
 #define EXAMPLE_CODE  AT_PARSER
 
-
 #ifndef EXAMPLE_CODE 
  #error "User example code is not defined"
 #endif
@@ -90,7 +89,6 @@ void uart_2_rm (void)
     }
 }
 #elif EXAMPLE_CODE==AT_PARSER
-//parser example
 void at_cmd_parser(void)
 {
     int watch_c;
@@ -289,6 +287,13 @@ void at_cmd_parser(void)
                                 default: tfp_printf("Error\n");                                
                             }
                         break;
+                        case 'r':
+                        case 'R':
+                            tfp_printf("MCU is going to Reset...\n");
+                            /* Write to the Application Interrupt/Reset Command Register to reset
+                             * the EFM32. See section 9.3.7 in the reference manual. */
+                             SCB->AIRCR = 0x05FA0004;
+                        break;                        
                         case 'z':
                         case 'Z':
                             tfp_printf("ATZ is not supported, use AT+FREQ=\n");
@@ -312,7 +317,6 @@ void at_cmd_parser(void)
 }
 #endif
 
-// Initialization of everything
 void all_init(void)
 {
   
@@ -376,7 +380,7 @@ void user_setup (void)
 #if EXAMPLE_CODE==UART_2_RM        
     tfp_printf("This is UART TO NWAVE example, each 4 bytes coming to UART are sent to the radio module transmitter.\n" );
 #elif EXAMPLE_CODE==AT_PARSER    
-    tfp_printf("Welcome to NWAVETEC Terminal! Input an AT command:\n" );
+    tfp_printf("Welcome to Nwave console!\nInput an AT command:\n" );
 #endif    
 }
 
