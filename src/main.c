@@ -158,7 +158,7 @@ void at_cmd_parser(void)
                                                                  tfp_printf("Error\n");
                                                                  break;
                                                                 }
-                                                                else if (((freq - bandw) < RF_RANGE_LOW_END) || ((freq + bandw) > RF_RANGE_HIGH_END) ) {
+                                                                else if (((freq - bandw/2) < RF_RANGE_LOW_END) || ((freq + bandw/2) > RF_RANGE_HIGH_END) ) {
                                                                  tfp_printf("Error\n");
                                                                  break;
                                                                 }  
@@ -182,6 +182,74 @@ void at_cmd_parser(void)
                                   }
                                 break;
 
+                                
+                                
+                                case 'r':
+                                case 'R':
+                                  switch (at_cmd_buffer[4]) {
+                                    case 'c':
+                                    case 'C':
+                                      switch (at_cmd_buffer[5]) {
+                                        case 'v':
+                                        case 'V':                                
+                                              switch (at_cmd_buffer[6]) {
+                                                case '=':   
+                                                  {
+                                                    temp1 = sizeof("AT+RCV=") - 1;
+                                                    unsigned char j = 0;
+                                                    while (at_cmd_buffer[temp1] != '\n' ) 
+                                                    {  
+                                                      if (at_cmd_buffer[temp1 + 1] == '\n') break;
+                                                      if (at_cmd_buffer[temp1] == '$')
+                                                      {
+                                                        unsigned char arr[3] = { 0,0,'\n'};
+                                                        temp1++;
+                                                        arr[0] = at_cmd_buffer[temp1++];
+                                                        arr[1] = at_cmd_buffer[temp1++];
+                                                        int dat;
+                                                        sscanf((char *)arr, "%x", &dat);                                                         
+                                                        send_buf_len.send_buffer[j++] = dat; 
+                                                        send_buf_len.len = j;
+                                                        if ( j > 20 ) {
+                                                          tfp_printf("Error\n");
+                                                        }
+                                                      }
+                                                      else {
+                                                        tfp_printf("Error\n");
+                                                      }
+                                                    }
+                                                    if (send_buf_len.len == 0) {
+                                                      tfp_printf("Error\n");
+                                                    }
+                                                    else {
+                                                      unsigned char packetRec[256]; 
+                                                      unsigned char res = 0;
+                                                      res = NWAVE_send(send_buf_len.send_buffer, send_buf_len.len, packetRec, PROTOCOL_E);
+                                                      if (res > 0) && (res < 256) { 
+                                                        NWRM_UART_Send(packetRec, res);
+                                                      }
+                                                      else
+                                                      {
+                                                        init_printf(NWRM_UART_Init(9600, true, false),
+                                                                  NWRM_UART_Putc,
+                                                                  NWRM_UART_Start,
+                                                                  NWRM_UART_Stop);                                                      
+                                                        tfp_printf("Error\n");
+                                                      }
+                                                    }
+                                                }
+                                                break;
+                                                default: tfp_printf("Error\n");                                                  
+                                              }
+                                              break;
+                                              default: tfp_printf("Error\n");                                              
+                                              }
+                                            break;
+                                            default: tfp_printf("Error\n");                                              
+                                          }                                      
+                                          break;                              
+                                           
+                                
                                 case 's':
                                 case 'S':
                                   switch (at_cmd_buffer[4]) {
@@ -256,6 +324,10 @@ void at_cmd_parser(void)
                                                                 case '?':
                                                                   {
                                                                     NWRM_DEVICE device;
+#if 0
+                                                                    device.Serial = 0x1CAFE;
+                                                                    NWRM_FLASH_DeviceWrite(&device);
+#endif        
                                                                     NWRM_FLASH_DeviceRead(&device); 
                                                                     unsigned char buffer[8];
                                                                     sprintf((char *)buffer, "%08x", device.Serial);
@@ -287,8 +359,8 @@ void at_cmd_parser(void)
                                 default: tfp_printf("Error\n");                                
                             }
                         break;
-                        case 'r':
-                        case 'R':
+                        case 'b':
+                        case 'B':
                             tfp_printf("MCU is going to Reset...\n");
                             /* Write to the Application Interrupt/Reset Command Register to reset
                              * the EFM32. See section 9.3.7 in the reference manual. */
