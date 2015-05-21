@@ -225,7 +225,7 @@ void at_cmd_parser(void)
                                                       unsigned char packetRec[256]; 
                                                       unsigned char res = 0;
                                                       res = NWAVE_send(send_buf_len.send_buffer, send_buf_len.len, packetRec, PROTOCOL_E);
-                                                      if (res > 0) && (res < 256) { 
+                                                      if ((res > 0) && (res < 256)) { 
                                                         NWRM_UART_Send(packetRec, res);
                                                       }
                                                       else
