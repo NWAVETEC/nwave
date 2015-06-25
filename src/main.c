@@ -30,7 +30,11 @@
 
 /* Counts 1ms timeTicks */
 volatile uint32_t msTicks;
-void Delay(uint32_t dlyTicks);
+/* Counts 1ms timeTicks */
+uint32_t sTicks;
+
+//void Delay(uint32_t dlyTicks);
+
 void delay(uint32_t dlyTicks);
 
 void init_printf(void *putp, void (*putf)(void *, char), void (*start)(void *), void (*stop)(void *));
@@ -39,15 +43,23 @@ void tfp_printf(char *fmt, ...);
 void SysTick_Handler(void)
 {
 	msTicks++;       /* increment counter necessary in Delay()*/
+        sTicks++;
 }
-
-
+/*
+void Delay(uint32_t dlyTicks)
+{
+	uint32_t curTicks;
+	
+	curTicks = sTicks;
+	while ((sTicks - curTicks) < dlyTicks) ;
+}
+*/
 void delay(uint32_t dlyTicks)
 {
 	uint32_t curTicks;
 	
-	curTicks = msTicks;
-	while ((msTicks - curTicks) < dlyTicks) ;
+	curTicks = sTicks;
+	while ((sTicks - curTicks) < dlyTicks) ;
 }
 
 
@@ -222,9 +234,10 @@ void at_cmd_parser(void)
                                                       tfp_printf("Error\n");
                                                     }
                                                     else {
-                                                      unsigned char packetRec[256]; 
+                                                      char packetRec[256]; 
                                                       unsigned char res = 0;
                                                       res = NWAVE_send(send_buf_len.send_buffer, send_buf_len.len, packetRec, PROTOCOL_E);
+                                                      //tfp_printf("Res:%d\n", res);
                                                       if ((res > 0) && (res < 256)) { 
                                                         NWRM_UART_Send(packetRec, res);
                                                       }
@@ -408,7 +421,7 @@ void all_init(void)
 	
 	CMU_ClockEnable(cmuClock_GPIO, true);
 
-	Delay(200);
+	delay(200);
 	
 	GPIO_PinModeSet(gpioPortF,2, gpioModePushPull, 0);
 	GPIO_PinOutSet(gpioPortF,2); 
@@ -418,7 +431,7 @@ void all_init(void)
 	//RF reset 
 	GPIO_PinModeSet(gpioPortB,14, gpioModePushPull, 0);
 	GPIO_PinOutClear(gpioPortB,14);
-	Delay(1);
+	delay(1);
 	GPIO_PinModeSet(gpioPortB,14, gpioModeInput,0);
 	
 	/////////////////////////////  
@@ -458,6 +471,36 @@ void user_setup (void)
 
 void user_loop (void)
 {
+#if 0
+//#error          
+    uint8_t val; 
+    uint8_t RSSI = 0;
+    uint8_t curRSSI = 0;
+    uint8_t SNR=0;    
+    unsigned char packetRec[256];     
+    long freq = 869800000;//TODO make freq dependent on serial    
+    while (1) {
+      //val = UNBreceive(packetRec,250,&RSSI,&curRSSI,&SNR,freq, UNB_settings.ID);//TODO make serial filtering inside          
+      //val = UNBreceive(packetRec,250,&RSSI,&curRSSI,&SNR,freq, 0);//TODO make serial filtering inside                
+      val = UNBreceive(packetRec,250,&RSSI,&curRSSI,&SNR,freq, 0);//TODO make serial filtering inside                
+      delay(1000);      
+    }
+#endif 
+#if 0
+    long F=0;
+    int L=0;    
+    L = 8;
+    F = 869800000;//for test purposes
+    unsigned char data[9]="Nwave";    
+    data[5]=0xCA;
+    data[6]=0xFE;     
+    data[7]=0xFE;    
+    data[8]=0xED;   
+    while(1) {
+      UNBsendInLORA(data, L, F);
+      delay(1000);
+    }
+#endif   
 #if EXAMPLE_CODE==UART_2_RM
     uart_2_rm();
 #elif EXAMPLE_CODE==AT_PARSER
