@@ -471,36 +471,6 @@ void user_setup (void)
 
 void user_loop (void)
 {
-#if 0
-//#error          
-    uint8_t val; 
-    uint8_t RSSI = 0;
-    uint8_t curRSSI = 0;
-    uint8_t SNR=0;    
-    unsigned char packetRec[256];     
-    long freq = 869800000;//TODO make freq dependent on serial    
-    while (1) {
-      //val = UNBreceive(packetRec,250,&RSSI,&curRSSI,&SNR,freq, UNB_settings.ID);//TODO make serial filtering inside          
-      //val = UNBreceive(packetRec,250,&RSSI,&curRSSI,&SNR,freq, 0);//TODO make serial filtering inside                
-      val = UNBreceive(packetRec,250,&RSSI,&curRSSI,&SNR,freq, 0);//TODO make serial filtering inside                
-      delay(1000);      
-    }
-#endif 
-#if 0
-    long F=0;
-    int L=0;    
-    L = 8;
-    F = 869800000;//for test purposes
-    unsigned char data[9]="Nwave";    
-    data[5]=0xCA;
-    data[6]=0xFE;     
-    data[7]=0xFE;    
-    data[8]=0xED;   
-    while(1) {
-      UNBsendInLORA(data, L, F);
-      delay(1000);
-    }
-#endif   
 #if EXAMPLE_CODE==UART_2_RM
     uart_2_rm();
 #elif EXAMPLE_CODE==AT_PARSER
