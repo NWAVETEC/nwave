@@ -91,9 +91,10 @@ void uart_2_rm (void)
     send_buf_len.send_buffer[i++] = watch_c;
      if (i >= 4) {      
          unsigned char packetRec[256];       
-#warning "Set a proper frequency value for your environment"
+         //#warning "Set a proper frequency value for your environment"
 	 /* NWAVE_Set_Frequency(866500000, 50000, 100); */
-         NWAVE_Set_Frequency(868800000, 50000, 100);          
+         /* NWAVE_Set_Frequency(868800000, 50000, 100); */
+         /* NWAVE_Set_Frequency(916500000, 50000, 100); */
          NWAVE_send(send_buf_len.send_buffer, 4 /*send_buf_len.len*/ , packetRec, PROTOCOL_B);
          tfp_printf("Data sent.\n");
          i = 0;
@@ -416,8 +417,10 @@ void all_init(void)
 	CMU_ClockDivSet(cmuClock_CORE,cmuClkDiv_1);
 	if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1) ;
 	
-	NWAVE_Set_Frequency(866500000, 50000, 100);
-        /* NWAVE_Set_Frequency(868800000, 50000, 100); */
+#warning "Set a proper frequency value for your environment"
+	 NWAVE_Set_Frequency(866500000, 50000, 100); 
+         /* NWAVE_Set_Frequency(868800000, 50000, 100); */
+         /* NWAVE_Set_Frequency(916500000, 50000, 100); */
 	
 	CMU_ClockEnable(cmuClock_GPIO, true);
 
