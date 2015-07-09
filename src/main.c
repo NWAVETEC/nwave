@@ -338,17 +338,55 @@ void at_cmd_parser(void)
                                                                 case '?':
                                                                   {
                                                                     NWRM_DEVICE device;
-#if 0
-                                                                    device.Serial = 0x1CAFE;
-                                                                    NWRM_FLASH_DeviceWrite(&device);
-#endif        
                                                                     NWRM_FLASH_DeviceRead(&device); 
                                                                     unsigned char buffer[8];
                                                                     sprintf((char *)buffer, "%08x", device.Serial);
                                                                     tfp_printf((char *)buffer);
                                                                     tfp_printf("\n");
                                                                   }
-                                                                break;                                                          
+                                                                break;
+                                                                case '$':
+                                                                  {
+                                                                    temp1 = sizeof("AT+SERIAL=") - 1;
+                                                                    unsigned char j = 0;
+                                                                    send_buf_len.len = 0;
+                                                                    while (at_cmd_buffer[temp1] != '\n' ) 
+                                                                    {  
+                                                                      if (at_cmd_buffer[temp1 + 1] == '\n') break;
+                                                                      if (at_cmd_buffer[temp1] == '$')
+                                                                      {
+                                                                        unsigned char arr[3] = { 0,0,'\n'};
+                                                                        temp1++;
+                                                                        arr[0] = at_cmd_buffer[temp1++];
+                                                                        arr[1] = at_cmd_buffer[temp1++];
+                                                                        int dat;
+                                                                        sscanf((char *)arr, "%x", &dat);                                                         
+                                                                        send_buf_len.send_buffer[j++] = dat; 
+                                                                        send_buf_len.len = j;
+                                                                        if ( j > 8 ) {
+                                                                          tfp_printf("Error\n");
+                                                                        }
+                                                                      }
+                                                                      else {
+                                                                        tfp_printf("Error\n");
+                                                                      }
+                                                                    }                                                                    
+                                                                    
+                                                                    NWRM_DEVICE device;
+                                                                    device.Serial = 0;
+                                                                    for (unsigned char z = 0; z < send_buf_len.len ; z++) {
+                                                                      if (z > 0) device.Serial <<= 8;
+                                                                      device.Serial |= *(unsigned char *)(send_buf_len.send_buffer + z); 
+                                                                      
+                                                                    }
+                                                                    NWRM_FLASH_DeviceWrite(&device);
+                                                                    NWRM_FLASH_DeviceRead(&device); 
+                                                                    unsigned char buffer[8];
+                                                                    sprintf((char *)buffer, "%08x", device.Serial);
+                                                                    tfp_printf((char *)buffer);
+                                                                    tfp_printf("\n");
+                                                                  }
+                                                                break;                                                                
                                                                 default: tfp_printf("Error\n"); 
                                                               }
                                                             break;                                                          
