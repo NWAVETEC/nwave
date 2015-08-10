@@ -40,6 +40,9 @@ void delay(uint32_t dlyTicks);
 void init_printf(void *putp, void (*putf)(void *, char), void (*start)(void *), void (*stop)(void *));
 void tfp_printf(char *fmt, ...);
 
+extern unsigned long FreqLow;
+extern unsigned long FreqHigh;
+
 void SysTick_Handler(void)
 {
 	msTicks++;       /* increment counter necessary in Delay()*/
@@ -146,6 +149,13 @@ void at_cmd_parser(void)
                                                               tfp_printf("Error\n");
                                                               break;
                                                             }  
+                                                            else if (at_cmd_buffer[8] == '?')   {
+                                                              
+                                                                tfp_printf("FreqLow:%d FreqHigh:%d\n",FreqLow, FreqHigh);
+                                                              //tfp_printf("freq:%d bandw:%d\n",freq, bandw);
+                                                              break;
+                                                            }  
+
                                                             unsigned char temp1 = 0 ;
                                                             unsigned char temp2 = 0 ;
                                                             while (at_cmd_buffer[temp1] != ',' ) {
