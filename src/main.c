@@ -96,6 +96,7 @@ void uart_2_rm (void)
          /* NWAVE_Set_Frequency(868800000, 50000, 100); */
          /* NWAVE_Set_Frequency(916500000, 50000, 100); */
          NWAVE_send(send_buf_len.send_buffer, 4 /*send_buf_len.len*/ , packetRec, PROTOCOL_B);
+         
          tfp_printf("Data sent.\n");
          i = 0;
      }
@@ -510,8 +511,10 @@ void user_setup (void)
 #endif    
 }
 
+unsigned char cnt = 0;
 void user_loop (void)
 {
+    RTC_CounterReset();
 #if EXAMPLE_CODE==UART_2_RM
     uart_2_rm();
 #elif EXAMPLE_CODE==AT_PARSER
