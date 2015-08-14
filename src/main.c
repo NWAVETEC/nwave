@@ -25,6 +25,7 @@
  #error "User example code is not defined"
 #endif
 
+#define LED_BLINKING
 
 
 
@@ -80,6 +81,11 @@ char at_cmd_buffer[AT_MAX_LEN];
 int i = 0;
 unsigned int freq = 0;
 unsigned int bandw = 0;
+
+bool led_blinking_enabled = true;
+bool serial_valid;
+bool send_data_valid;
+
 struct t_send_buf_len
 {
  unsigned char send_buffer[20];
@@ -205,9 +211,24 @@ void at_cmd_parser(void)
                                       default: tfp_printf("Error\n");                                      
                                   }
                                 break;
-
                                 
-                                
+                                case 'b':
+                                case 'B':
+                                  switch (at_cmd_buffer[4]) {
+                                    case '=':
+                                      if(at_cmd_buffer[5]=='y' || at_cmd_buffer[5]=='Y') {
+                                        led_blinking_enabled = true; 
+                                        tfp_printf("Ok\n"); 
+                                      }
+                                      else if(at_cmd_buffer[5]=='n' || at_cmd_buffer[5]=='N') {
+                                        led_blinking_enabled = false;
+                                        tfp_printf("Ok\n"); 
+                                      }
+                                      else tfp_printf("Error\n");
+                                    break;
+                                    default: tfp_printf("Error\n");
+                                  }
+                                  break;  
                                 case 'r':
                                 case 'R':
                                   switch (at_cmd_buffer[4]) {
@@ -289,6 +310,7 @@ void at_cmd_parser(void)
                                               switch (at_cmd_buffer[7]) {
                                                 case '=':   
                                                   {
+                                                    send_data_valid = true; //and later maybe changed to false if input data is wrong
                                                     temp1 = sizeof("AT+SEND=") - 1;
                                                     unsigned char j = 0;
                                                     while (at_cmd_buffer[temp1] != '\n' ) 
@@ -310,12 +332,14 @@ void at_cmd_parser(void)
                                                       }
                                                       else {
                                                         tfp_printf("Error\n");
+                                                        send_data_valid = false;
+                                                        break;
                                                       }
                                                     }
                                                     if (send_buf_len.len == 0) {
                                                       tfp_printf("Error\n");
                                                     }
-                                                    else {
+                                                    else if (send_data_valid == true){
                                                       unsigned char packetRec[256]; 
                                                       NWAVE_send(send_buf_len.send_buffer, send_buf_len.len, packetRec, PROTOCOL_B);
                                                       init_printf(NWRM_UART_Init(9600, true, false),
@@ -358,6 +382,7 @@ void at_cmd_parser(void)
                                                                 break;
                                                                 case '$':
                                                                   {
+                                                                    serial_valid = true; //and later maybe changed to false if input data is wrong
                                                                     temp1 = sizeof("AT+SERIAL=") - 1;
                                                                     unsigned char j = 0;
                                                                     send_buf_len.len = 0;
@@ -380,22 +405,26 @@ void at_cmd_parser(void)
                                                                       }
                                                                       else {
                                                                         tfp_printf("Error\n");
+                                                                        serial_valid = false;
+                                                                        break;
                                                                       }
                                                                     }                                                                    
-                                                                    
-                                                                    NWRM_DEVICE device;
-                                                                    device.Serial = 0;
-                                                                    for (unsigned char z = 0; z < send_buf_len.len ; z++) {
-                                                                      if (z > 0) device.Serial <<= 8;
-                                                                      device.Serial |= *(unsigned char *)(send_buf_len.send_buffer + z); 
-                                                                      
+                                                                    if (serial_valid)
+                                                                    {
+                                                                      NWRM_DEVICE device;
+                                                                      device.Serial = 0;
+                                                                      for (unsigned char z = 0; z < send_buf_len.len ; z++) {
+                                                                        if (z > 0) device.Serial <<= 8;
+                                                                        device.Serial |= *(unsigned char *)(send_buf_len.send_buffer + z); 
+                                                                        
+                                                                      }
+                                                                      NWRM_FLASH_DeviceWrite(&device);
+                                                                      NWRM_FLASH_DeviceRead(&device); 
+                                                                      unsigned char buffer[8];
+                                                                      sprintf((char *)buffer, "%08x", device.Serial);
+                                                                      tfp_printf((char *)buffer);
+                                                                      tfp_printf("\n");
                                                                     }
-                                                                    NWRM_FLASH_DeviceWrite(&device);
-                                                                    NWRM_FLASH_DeviceRead(&device); 
-                                                                    unsigned char buffer[8];
-                                                                    sprintf((char *)buffer, "%08x", device.Serial);
-                                                                    tfp_printf((char *)buffer);
-                                                                    tfp_printf("\n");
                                                                   }
                                                                 break;                                                                
                                                                 default: tfp_printf("Error\n"); 
@@ -451,6 +480,48 @@ void at_cmd_parser(void)
     }
 }
 #endif
+
+#ifdef LED_BLINKING
+
+#define BSP_STATUS_OK                 0     /**< BSP API return code, no errors. */
+#define BSP_STATUS_ILLEGAL_PARAM      (-1)  /**< BSP API return code, illegal input parameter. */
+#define BSP_STATUS_NOT_IMPLEMENTED    (-2)  /**< BSP API return code, function not implemented (dummy). */
+#define BSP_STATUS_UNSUPPORTED_MODE   (-3)  /**< BSP API return code, unsupported BSP mode. */
+
+#define BSP_GPIO_LEDS
+#define BSP_NO_OF_LEDS  1
+typedef struct
+{
+  GPIO_Port_TypeDef   port;
+  unsigned int        pin;
+} tLedArray;
+
+#define BSP_GPIO_LEDARRAY_INIT {{gpioPortC,15}}
+static const tLedArray ledArray[ BSP_NO_OF_LEDS ] = BSP_GPIO_LEDARRAY_INIT;
+
+int BSP_LedsInit(void)
+{
+  int i;
+
+  //CMU_ClockEnable(cmuClock_HFPER, true);
+  //CMU_ClockEnable(cmuClock_GPIO, true);
+  for ( i=0; i<BSP_NO_OF_LEDS; i++ )
+  {
+    GPIO_PinModeSet(ledArray[i].port, ledArray[i].pin, gpioModePushPull, 0);
+  }
+  return BSP_STATUS_OK;
+}
+
+int BSP_LedToggle(int ledNo)
+{
+  if ((ledNo >= 0) && (ledNo < BSP_NO_OF_LEDS))
+  {
+    GPIO_PinOutToggle(ledArray[ledNo].port, ledArray[ledNo].pin);
+    return BSP_STATUS_OK;
+  }
+  return BSP_STATUS_ILLEGAL_PARAM;
+}
+#endif // LED_BLINKING
 
 void all_init(void)
 {
@@ -525,6 +596,10 @@ unsigned char cnt = 0;
 void user_loop (void)
 {
     RTC_CounterReset();
+#ifdef LED_BLINKING    
+    if (led_blinking_enabled)
+    BSP_LedToggle(0);
+#endif    
 #if EXAMPLE_CODE==UART_2_RM
     uart_2_rm();
 #elif EXAMPLE_CODE==AT_PARSER
