@@ -43,21 +43,32 @@ void tfp_printf(char *fmt, ...);
 
 extern unsigned long FreqLow;
 extern unsigned long FreqHigh;
+bool led_blinking_enabled = true;
 
 void SysTick_Handler(void)
 {
 	msTicks++;       /* increment counter necessary in Delay()*/
         sTicks++;
 }
-/*
-void Delay(uint32_t dlyTicks)
+unsigned long msTicks_prev = 0;
+void GPIO_ODD_IRQHandler(void)
 {
-	uint32_t curTicks;
-	
-	curTicks = sTicks;
-	while ((sTicks - curTicks) < dlyTicks) ;
+  GPIO_IntClear(GPIO_IntGet());  
+  if (msTicks - msTicks_prev > 1500) 
+  {
+    msTicks_prev = msTicks;
+    if (led_blinking_enabled) led_blinking_enabled = false;
+     else led_blinking_enabled = true;
+  }
 }
-*/
+
+void GPIO_EVEN_IRQHandler(void)
+{
+  GPIO_IntClear(GPIO_IntGet());
+  if (led_blinking_enabled) led_blinking_enabled = false;
+   else led_blinking_enabled = true;  
+}
+
 void delay(uint32_t dlyTicks)
 {
 	uint32_t curTicks;
@@ -82,7 +93,7 @@ int i = 0;
 unsigned int freq = 0;
 unsigned int bandw = 0;
 
-bool led_blinking_enabled = true;
+
 bool serial_valid;
 bool send_data_valid;
 
@@ -515,7 +526,7 @@ int BSP_LedsInit(void)
 int BSP_LedToggle(int ledNo)
 {
   if ((ledNo >= 0) && (ledNo < BSP_NO_OF_LEDS))
-  {
+  {(ledArray[ledNo].port, ledArray[ledNo].pin);
     GPIO_PinOutToggle(ledArray[ledNo].port, ledArray[ledNo].pin);
     return BSP_STATUS_OK;
   }
@@ -576,9 +587,22 @@ void all_init(void)
     		NWRM_UART_Start,
     		NWRM_UART_Stop);        
         
-    
 
-       
+  // Define the button pin as an input with an internal pull-up resistor
+
+  GPIO_PinModeSet(gpioPortB, 13, gpioModeInputPull, 1);
+  // Enable falling edge interrupts on button pin
+
+  GPIO_IntConfig(gpioPortB, 13, false, true, true);
+
+  NVIC_ClearPendingIRQ(GPIO_EVEN_IRQn);
+
+  NVIC_EnableIRQ(GPIO_EVEN_IRQn);
+
+  NVIC_ClearPendingIRQ(GPIO_ODD_IRQn);
+
+  NVIC_EnableIRQ(GPIO_ODD_IRQn);
+ 
 }      
 
 void user_setup (void)
@@ -597,8 +621,13 @@ void user_loop (void)
 {
     RTC_CounterReset();
 #ifdef LED_BLINKING    
-    if (led_blinking_enabled)
-    BSP_LedToggle(0);
+    if (led_blinking_enabled) {
+      BSP_LedToggle(0);
+    }
+    else if(!led_blinking_enabled) {
+      GPIO_PinOutClear(ledArray[0].port, ledArray[0].pin);
+    }
+      
 #endif    
 #if EXAMPLE_CODE==UART_2_RM
     uart_2_rm();
