@@ -54,7 +54,7 @@ unsigned long msTicks_prev = 0;
 void GPIO_ODD_IRQHandler(void)
 {
   GPIO_IntClear(GPIO_IntGet());  
-  if (msTicks - msTicks_prev > 1500) 
+  if (msTicks - msTicks_prev > 2) 
   {
     msTicks_prev = msTicks;
     if (led_blinking_enabled) led_blinking_enabled = false;
