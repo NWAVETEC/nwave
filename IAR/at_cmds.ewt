@@ -2225,7 +2225,7 @@
     </file>
   </group>
   <group>
-    <name>UNB+</name>
+    <name>UNB</name>
     <file>
       <name>$PROJ_DIR$\UNB+\nwrm_flash.c</name>
     </file>

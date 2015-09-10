@@ -2024,7 +2024,7 @@
     </file>
   </group>
   <group>
-    <name>UNB+</name>
+    <name>UNB</name>
     <excluded>
       <configuration>Debug</configuration>
       <configuration>Release</configuration>
