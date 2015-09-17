@@ -54,11 +54,16 @@ unsigned long msTicks_prev = 0;
 void GPIO_ODD_IRQHandler(void)
 {
   GPIO_IntClear(GPIO_IntGet());  
-  if (msTicks - msTicks_prev > 2) 
+  if (msTicks - msTicks_prev > 77) 
   {
     msTicks_prev = msTicks;
-    if (led_blinking_enabled) led_blinking_enabled = false;
-     else led_blinking_enabled = true;
+    if (led_blinking_enabled == true) {
+      led_blinking_enabled = false;
+    }
+     else 
+     {
+       led_blinking_enabled = true;
+     }
   }
 }
 
@@ -525,7 +530,7 @@ int BSP_LedsInit(void)
 
 int BSP_LedToggle(int ledNo)
 {
-  if ((ledNo >= 0) && (ledNo < BSP_NO_OF_LEDS))
+  if ((ledNo >= 0) && (ledNo < BSP_NO_OF_LEDS)) 
   {(ledArray[ledNo].port, ledArray[ledNo].pin);
     GPIO_PinOutToggle(ledArray[ledNo].port, ledArray[ledNo].pin);
     return BSP_STATUS_OK;
@@ -621,13 +626,12 @@ void user_loop (void)
 {
     RTC_CounterReset();
 #ifdef LED_BLINKING    
-    if (led_blinking_enabled) {
+    if (led_blinking_enabled == true) {
       BSP_LedToggle(0);
     }
-    else if(!led_blinking_enabled) {
+    else if(led_blinking_enabled == false) {
       GPIO_PinOutClear(ledArray[0].port, ledArray[0].pin);
     }
-      
 #endif    
 #if EXAMPLE_CODE==UART_2_RM
     uart_2_rm();
