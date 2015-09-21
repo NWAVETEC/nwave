@@ -16,6 +16,12 @@
 #include "nwrm_flash.h"
 #include "em_usart.h"
 
+
+
+
+
+
+
 #define AT_PARSER  0
 #define UART_2_RM    1
 
@@ -26,6 +32,7 @@
 #endif
 
 #define LED_BLINKING
+#define SEND_MSG_BTN
 
 
 
@@ -45,17 +52,28 @@ extern unsigned long FreqLow;
 extern unsigned long FreqHigh;
 bool led_blinking_enabled = true;
 
+#ifdef SEND_MSG_BTN
+bool button_pressed = false;
+unsigned char iterator_test_text[8] = {0xCA, 0xFE, 0xBE, 0xEF, 0xFE, 0xED, 0xBA, 0xBE};
+unsigned char *iterator_test_msg = (unsigned char *)&iterator_test_text;
+#endif
+
 void SysTick_Handler(void)
 {
 	msTicks++;       /* increment counter necessary in Delay()*/
         sTicks++;
 }
+
+
 unsigned long msTicks_prev = 0;
 void GPIO_ODD_IRQHandler(void)
 {
   GPIO_IntClear(GPIO_IntGet());  
   if (msTicks - msTicks_prev > 77) 
   {
+#ifdef SEND_MSG_BTN 
+    button_pressed = true;
+#endif    
     msTicks_prev = msTicks;
     if (led_blinking_enabled == true) {
       led_blinking_enabled = false;
@@ -121,7 +139,7 @@ void uart_2_rm (void)
          /* NWAVE_Set_Frequency(868800000, 50000, 100); */
          /* NWAVE_Set_Frequency(916500000, 50000, 100); */
          NWAVE_send(send_buf_len.send_buffer, 4 /*send_buf_len.len*/ , packetRec, PROTOCOL_B);
-         
+         NWRM_RTC_Init(0);
          tfp_printf("Data sent.\n");
          i = 0;
      }
@@ -286,6 +304,7 @@ void at_cmd_parser(void)
                                                       char packetRec[256]; 
                                                       unsigned char res = 0;
                                                       res = NWAVE_send(send_buf_len.send_buffer, send_buf_len.len, packetRec, PROTOCOL_E);
+                                                      NWRM_RTC_Init(0);                                                      
                                                       //tfp_printf("Res:%d\n", res);
                                                       if ((res > 0) && (res < 256)) { 
                                                         NWRM_UART_Send(packetRec, res);
@@ -358,6 +377,7 @@ void at_cmd_parser(void)
                                                     else if (send_data_valid == true){
                                                       unsigned char packetRec[256]; 
                                                       NWAVE_send(send_buf_len.send_buffer, send_buf_len.len, packetRec, PROTOCOL_B);
+                                                      NWRM_RTC_Init(0);
                                                       init_printf(NWRM_UART_Init(9600, true, false),
                                                                 NWRM_UART_Putc,
                                                                 NWRM_UART_Start,
@@ -621,6 +641,9 @@ void user_setup (void)
 #endif    
 }
 
+
+static RTC_Init_TypeDef RTCInit;
+static volatile bool NWRM_RTC_EndDelay = false;
 unsigned char cnt = 0;
 void user_loop (void)
 {
@@ -631,6 +654,17 @@ void user_loop (void)
     }
     else if(led_blinking_enabled == false) {
       GPIO_PinOutClear(ledArray[0].port, ledArray[0].pin);
+    }
+#endif    
+#ifdef SEND_MSG_BTN    
+    unsigned char packetRec[256];     
+    if (button_pressed == true) {
+      button_pressed = false;
+      NWAVE_send(iterator_test_msg, 8, packetRec, PROTOCOL_B);
+
+      NWRM_RTC_Init(0); // RTC_Init(&RTCInit); 	RTC_Enable(true);
+      
+      iterator_test_text[7]++;
     }
 #endif    
 #if EXAMPLE_CODE==UART_2_RM
