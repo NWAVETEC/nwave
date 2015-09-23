@@ -71,6 +71,7 @@ void GPIO_ODD_IRQHandler(void)
   GPIO_IntClear(GPIO_IntGet());  
   if (msTicks - msTicks_prev > 77) 
   {
+    GPIO_IntConfig(gpioPortB, 13, false, true, false);    
 #ifdef SEND_MSG_BTN 
     button_pressed = true;
 #endif    
@@ -139,7 +140,7 @@ void uart_2_rm (void)
          /* NWAVE_Set_Frequency(868800000, 50000, 100); */
          /* NWAVE_Set_Frequency(916500000, 50000, 100); */
          NWAVE_send(send_buf_len.send_buffer, 4 /*send_buf_len.len*/ , packetRec, PROTOCOL_B);
-         NWRM_RTC_Init(0);
+         
          tfp_printf("Data sent.\n");
          i = 0;
      }
@@ -304,7 +305,6 @@ void at_cmd_parser(void)
                                                       char packetRec[256]; 
                                                       unsigned char res = 0;
                                                       res = NWAVE_send(send_buf_len.send_buffer, send_buf_len.len, packetRec, PROTOCOL_E);
-                                                      NWRM_RTC_Init(0);                                                      
                                                       //tfp_printf("Res:%d\n", res);
                                                       if ((res > 0) && (res < 256)) { 
                                                         NWRM_UART_Send(packetRec, res);
@@ -377,7 +377,6 @@ void at_cmd_parser(void)
                                                     else if (send_data_valid == true){
                                                       unsigned char packetRec[256]; 
                                                       NWAVE_send(send_buf_len.send_buffer, send_buf_len.len, packetRec, PROTOCOL_B);
-                                                      NWRM_RTC_Init(0);
                                                       init_printf(NWRM_UART_Init(9600, true, false),
                                                                 NWRM_UART_Putc,
                                                                 NWRM_UART_Start,
@@ -661,9 +660,8 @@ void user_loop (void)
     if (button_pressed == true) {
       button_pressed = false;
       NWAVE_send(iterator_test_msg, 8, packetRec, PROTOCOL_B);
-
-      NWRM_RTC_Init(0); // RTC_Init(&RTCInit); 	RTC_Enable(true);
-      
+      GPIO_IntConfig(gpioPortB, 13, false, true, true);
+      //NWRM_RTC_Init(0); // RTC_Init(&RTCInit); 	RTC_Enable(true);
       iterator_test_text[7]++;
     }
 #endif    
@@ -678,6 +676,7 @@ int main(void)
 {
     user_setup();
     while (1) {
+        NWRM_RTC_Init(0);      
         NWRM_RTC_Sleep();
         user_loop();
     }
