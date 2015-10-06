@@ -3,7 +3,7 @@
 /* IcfEditorFile="$TOOLKIT_DIR$\config\ide\IcfEditor\cortex_v1_0.xml" */
 
 /*-Specials-*/
-define symbol __ICFEDIT_intvec_start__ = 0x00000000;
+define symbol __ICFEDIT_intvec_start__ = 0x00002000;
 
 /*-Memory Regions-*/
 define symbol __ICFEDIT_region_ROM_start__ = 0x00002000;
