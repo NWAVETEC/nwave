@@ -15,7 +15,7 @@
 #include "nwrm_printf.h"
 #include "nwrm_flash.h"
 #include "em_usart.h"
-
+#include <em_leuart.h>
 
 
 
@@ -44,18 +44,22 @@ uint32_t sTicks;
 //void Delay(uint32_t dlyTicks);
 
 void delay(uint32_t dlyTicks);
-
+void all_init(void);
 void init_printf(void *putp, void (*putf)(void *, char), void (*start)(void *), void (*stop)(void *));
 void tfp_printf(char *fmt, ...);
 
 extern unsigned long FreqLow;
 extern unsigned long FreqHigh;
+
+extern int RxReadIndex;
+extern int RxWriteIndex;
+
 bool led_blinking_enabled = true;
+bool button_pressed = false;
+bool parser_at_send_flag = false;
 
 #ifdef SEND_MSG_BTN
-bool button_pressed = false;
 unsigned char iterator_test_text[8] = {0xCA, 0xFE, 0xBE, 0xEF, 0xFE, 0xED, 0xBA, 0xBE};
-unsigned char *iterator_test_msg = (unsigned char *)&iterator_test_text;
 #endif
 
 void SysTick_Handler(void)
@@ -72,9 +76,7 @@ void GPIO_ODD_IRQHandler(void)
   if (msTicks - msTicks_prev > 77) 
   {
     GPIO_IntConfig(gpioPortB, 13, false, true, false);    
-#ifdef SEND_MSG_BTN 
     button_pressed = true;
-#endif    
     msTicks_prev = msTicks;
     if (led_blinking_enabled == true) {
       led_blinking_enabled = false;
@@ -345,6 +347,7 @@ void at_cmd_parser(void)
                                               switch (at_cmd_buffer[7]) {
                                                 case '=':   
                                                   {
+                                                    
                                                     send_data_valid = true; //and later maybe changed to false if input data is wrong
                                                     temp1 = sizeof("AT+SEND=") - 1;
                                                     unsigned char j = 0;
@@ -376,12 +379,12 @@ void at_cmd_parser(void)
                                                     }
                                                     else if (send_data_valid == true){
                                                       unsigned char packetRec[256]; 
-                                                      NWAVE_send(send_buf_len.send_buffer, send_buf_len.len, packetRec, PROTOCOL_B);
-                                                      init_printf(NWRM_UART_Init(9600, true, false),
-                                                                NWRM_UART_Putc,
-                                                                NWRM_UART_Start,
-                                                                NWRM_UART_Stop);                                                      
-                                                      tfp_printf("Ok\n");
+
+
+                                                      parser_at_send_flag  = true;
+      
+                                                  
+
                                                     }
                                                 }
                                                 break;
@@ -647,6 +650,24 @@ unsigned char cnt = 0;
 void user_loop (void)
 {
     RTC_CounterReset();
+    unsigned char packetRec[256];
+    
+    if (parser_at_send_flag == true)
+    {
+     NWAVE_send(send_buf_len.send_buffer, send_buf_len.len, packetRec, PROTOCOL_B);    
+     tfp_printf("Ok\n");     
+     parser_at_send_flag = false;
+    }
+    
+    if (button_pressed == true) {
+#ifdef SEND_MSG_BTN    
+     
+     button_pressed = false;
+     NWAVE_send(iterator_test_text, 8, packetRec, PROTOCOL_B);
+     iterator_test_text[7]++;
+#endif    
+     GPIO_IntConfig(gpioPortB, 13, false, true, true);    
+    }    
 #ifdef LED_BLINKING    
     if (led_blinking_enabled == true) {
       BSP_LedToggle(0);
@@ -654,17 +675,7 @@ void user_loop (void)
     else if(led_blinking_enabled == false) {
       GPIO_PinOutClear(ledArray[0].port, ledArray[0].pin);
     }
-#endif    
-#ifdef SEND_MSG_BTN    
-    unsigned char packetRec[256];     
-    if (button_pressed == true) {
-      button_pressed = false;
-      NWAVE_send(iterator_test_msg, 8, packetRec, PROTOCOL_B);
-      GPIO_IntConfig(gpioPortB, 13, false, true, true);
-      //NWRM_RTC_Init(0); // RTC_Init(&RTCInit); 	RTC_Enable(true);
-      iterator_test_text[7]++;
-    }
-#endif    
+#endif        
 #if EXAMPLE_CODE==UART_2_RM
     uart_2_rm();
 #elif EXAMPLE_CODE==AT_PARSER
