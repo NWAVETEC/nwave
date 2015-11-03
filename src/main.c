@@ -33,6 +33,7 @@
 
 #define LED_BLINKING
 #define SEND_MSG_BTN
+//#define ULTRASONIC_RANGER
 
 
 
@@ -41,12 +42,19 @@ volatile uint32_t msTicks;
 /* Counts 1ms timeTicks */
 uint32_t sTicks;
 
-//void Delay(uint32_t dlyTicks);
 
 void delay(uint32_t dlyTicks);
 void all_init(void);
 void init_printf(void *putp, void (*putf)(void *, char), void (*start)(void *), void (*stop)(void *));
 void tfp_printf(char *fmt, ...);
+void gpio_Init();
+
+void timer0_Init();
+
+void timer0_SetPeriod(uint16_t);
+
+void timer0_Start();
+void timer0_Stop();
 
 extern unsigned long FreqLow;
 extern unsigned long FreqHigh;
@@ -57,6 +65,9 @@ extern int RxWriteIndex;
 bool led_blinking_enabled = true;
 bool button_pressed = false;
 bool parser_at_send_flag = false;
+unsigned long timer0_isr_cnt = 0;
+
+
 
 #ifdef SEND_MSG_BTN
 unsigned char iterator_test_text[8] = {0xCA, 0xFE, 0xBE, 0xEF, 0xFE, 0xED, 0xBA, 0xBE};
@@ -90,19 +101,26 @@ void GPIO_ODD_IRQHandler(void)
 
 void GPIO_EVEN_IRQHandler(void)
 {
-  GPIO_IntClear(GPIO_IntGet());
-  if (led_blinking_enabled) led_blinking_enabled = false;
-   else led_blinking_enabled = true;  
+    GPIO_IntClear(GPIO_IntGet());
+    if (led_blinking_enabled) led_blinking_enabled = false;
+      else led_blinking_enabled = true;  
 }
+
 
 void delay(uint32_t dlyTicks)
 {
-	uint32_t curTicks;
+    uint32_t curTicks;
 	
-	curTicks = sTicks;
-	while ((sTicks - curTicks) < dlyTicks) ;
+    curTicks = sTicks;
+    while ((sTicks - curTicks) < dlyTicks) ;
 }
 
+void t0_delay(uint32_t us)
+{
+    timer0_isr_cnt = 0;
+    while (timer0_isr_cnt <= us) ;
+  
+}
 
 uint8_t RSSI = 0;
 uint8_t curRSSI = 0;
@@ -527,22 +545,53 @@ void at_cmd_parser(void)
 #define BSP_STATUS_UNSUPPORTED_MODE   (-3)  /**< BSP API return code, unsupported BSP mode. */
 
 #define BSP_GPIO_LEDS
-#define BSP_NO_OF_LEDS  1
+#define BSP_NO_OF_LEDS  2
 typedef struct
 {
   GPIO_Port_TypeDef   port;
   unsigned int        pin;
 } tLedArray;
 
-#define BSP_GPIO_LEDARRAY_INIT {{gpioPortC,15}}
+#define BSP_GPIO_LEDARRAY_INIT {{gpioPortC,15},{gpioPortA,1}}
 static const tLedArray ledArray[ BSP_NO_OF_LEDS ] = BSP_GPIO_LEDARRAY_INIT;
+
+void timer0_Init() {
+	NVIC_EnableIRQ(TIMER0_IRQn);
+	CMU_ClockEnable(cmuClock_TIMER0, true);
+        TIMER0->CTRL |= TIMER_CTRL_PRESC_DEFAULT;
+	TIMER0->CTRL |= TIMER_CTRL_CLKSEL_PRESCHFPERCLK;
+	TIMER0->CTRL |= TIMER_CTRL_MODE_UP;
+	TIMER0->IEN |= TIMER_IEN_OF;
+	TIMER0->IFC |= TIMER_IFC_CC0 | TIMER_IFC_CC1 | TIMER_IFC_CC2 | \
+		TIMER_IFC_ICBOF0 | TIMER_IFC_ICBOF1 | TIMER_IFC_ICBOF2 | \
+		TIMER_IFC_OF | TIMER_IFC_UF;
+}
+
+void timer0_SetPeriod(uint16_t top) {
+	TIMER0->TOPB = top;
+}
+
+void timer0_Start() {
+	TIMER0->CMD = TIMER_CMD_START;
+}
+
+void timer0_Stop() {
+        TIMER0->CMD = TIMER_CMD_STOP;
+}
+
+
+void TIMER0_IRQHandler() {
+    if(TIMER0->IF & TIMER_IF_OF) {
+        //clear the interrupt flag
+        TIMER0->IFC |= TIMER_IFC_OF;       
+        timer0_isr_cnt++;
+    }
+}
 
 int BSP_LedsInit(void)
 {
   int i;
 
-  //CMU_ClockEnable(cmuClock_HFPER, true);
-  //CMU_ClockEnable(cmuClock_GPIO, true);
   for ( i=0; i<BSP_NO_OF_LEDS; i++ )
   {
     GPIO_PinModeSet(ledArray[i].port, ledArray[i].pin, gpioModePushPull, 0);
@@ -615,21 +664,32 @@ void all_init(void)
     		NWRM_UART_Stop);        
         
 
-  // Define the button pin as an input with an internal pull-up resistor
+        // Define the button pin as an input with an internal pull-up resistor
 
-  GPIO_PinModeSet(gpioPortB, 13, gpioModeInputPull, 1);
-  // Enable falling edge interrupts on button pin
+        GPIO_PinModeSet(gpioPortB, 13, gpioModeInputPull, 1);
+        // Enable falling edge interrupts on button pin
 
-  GPIO_IntConfig(gpioPortB, 13, false, true, true);
+        BSP_LedsInit();
+        
+        GPIO_IntConfig(gpioPortB, 13, false, true, true);
 
-  NVIC_ClearPendingIRQ(GPIO_EVEN_IRQn);
+        NVIC_ClearPendingIRQ(GPIO_EVEN_IRQn);
 
-  NVIC_EnableIRQ(GPIO_EVEN_IRQn);
+        NVIC_EnableIRQ(GPIO_EVEN_IRQn);
 
-  NVIC_ClearPendingIRQ(GPIO_ODD_IRQn);
+        NVIC_ClearPendingIRQ(GPIO_ODD_IRQn);
 
-  NVIC_EnableIRQ(GPIO_ODD_IRQn);
- 
+        NVIC_EnableIRQ(GPIO_ODD_IRQn);
+       
+        // Next go inits for ultrasonic sensor
+    	CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFRCO); //Use HF clock
+
+  	timer0_Init();
+
+  	timer0_SetPeriod(100);
+
+  	timer0_Start();
+  
 }      
 
 void user_setup (void)
@@ -651,6 +711,47 @@ void user_loop (void)
 {
     RTC_CounterReset();
     unsigned char packetRec[256];
+    
+#ifdef ULTRASONIC_RANGER    
+    //////////////////////////////////////////////////////////////
+    //ULTRASONIC Distance Range Sensor 
+    delay(20);
+
+    GPIO_PinOutClear(ledArray[1].port, ledArray[1].pin); //Set 0 //BSP_LedToggle(1);
+    //t0_delay(25);
+    //for (unsigned int i = 0; i <= 1000000; i++);
+    GPIO_PinOutSet(ledArray[1].port, ledArray[1].pin); //Set 1 //BSP_LedToggle(1);
+    //for (unsigned int i = 0; i <= 100; i++);
+    t0_delay(1); // needs to be around 10 us
+    GPIO_PinOutClear(ledArray[1].port, ledArray[1].pin); //Set 0 // BSP_LedToggle(1);
+    
+    GPIO_PinModeSet(gpioPortA,1, gpioModeInput, 0);
+    timer0_isr_cnt = 0;
+    // Wait until ONE appears on the line
+    while ((GPIO_PinInGet(gpioPortA,1) == 0) && (timer0_isr_cnt <= 200000 ));         
+    timer0_isr_cnt = 0;
+    // Wait until ZERO appears on the line
+    while ((GPIO_PinInGet(gpioPortA,1) == 1) && (timer0_isr_cnt <= 200000 )); 
+    unsigned long captured_timer_cnt = timer0_isr_cnt;
+    
+    tfp_printf("captured_timer_cnt:%d \n", captured_timer_cnt ) ;
+    if (timer0_isr_cnt < 200000) {
+      if ((400 < captured_timer_cnt *50/383) && (captured_timer_cnt *50/383 < 700 )) {
+        tfp_printf("The distance is either too little or too big: Zero or Bigger than 400 cm\n") ;
+      }
+      else {
+        tfp_printf("The distance is:%d cm\n", captured_timer_cnt*50/383 ) ;
+      }
+    } 
+    else {
+     tfp_printf("Ultrasonic ranger disconnected.\n") ;  
+    }  
+    GPIO_PinModeSet(ledArray[1].port, ledArray[1].pin, gpioModePushPull, 0);
+    
+
+    //ULTRASONIC Distance Range Sensor 
+    //////////////////////////////////////////////////////////////
+#endif     // ULTRASONIC_RANGER
     
     if (parser_at_send_flag == true)
     {
@@ -682,6 +783,9 @@ void user_loop (void)
     at_cmd_parser();
 #endif     
 }
+
+ 
+
 
 int main(void)
 {
